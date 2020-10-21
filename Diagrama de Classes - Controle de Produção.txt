@@ -1,0 +1,85 @@
+@startuml
+
+title Controle de Produção - Class Diagram
+
+abstract class Material{
+  -Inteiro id
+  -Texto codigo
+  -Texto nome
+  -Texto descricao
+  -Decimal valorUnitario
+  -Decimal qtdEstoque
+  +void atualizarEstoque(Decimal qtd, Boleano entrada)
+}
+
+class Produto{}
+
+class MateriaPrima{}
+
+class Producao {
+  -Inteiro id
+  -Produto produto
+  -Lista<Etapa> etapas
+  -Decimal qtdProduzida
+  -Boleano finalizada
+  +Tempo calcularTempoProducao()
+  +Decimal calcularCustoProducao()
+}
+
+class MateriaUsada{
+  -Inteiro id
+  -MateriaPrima materiaPrima
+  -Decimal qtdUsada
+}
+
+class Etapa{
+  -Inteiro id
+  -TipoEtapa tipo
+  -Lista<MateriaUsada> materiasPrimas
+  -Lista<Funcionario> funcionarios
+  -Supervisor supervisor
+  -Tempo horaInicial
+  -Tempo horaFinal
+  +Tempo calcularTempoEtapa()
+  +Decimal calcularCustoEtapa()
+}
+
+class TipoEtapa{
+  -Inteiro id
+  -Texto codigo
+  -Texto nome
+  -Texto descricao
+}
+
+class Funcionario{
+  -Inteiro id
+  -Texto nome
+  -Cargo cargo
+}
+
+class Supervisor{
+  
+}
+
+class Cargo{
+  -Inteiro id
+  -Texto nome
+}
+
+Material <|-- Produto
+Material <|-- MateriaPrima
+
+Producao "1,*" o-- "1" Produto
+Producao "1" *-- "1,*" Etapa
+
+MateriaUsada "0,*" o-- "1" MateriaPrima
+
+Funcionario "0,*" o-- "1" Cargo
+Funcionario <|-- Supervisor
+
+Etapa "0,*" o-- "1" TipoEtapa
+Etapa "1" *-- "0,*" MateriaUsada
+Etapa "0,*" o-- "1,*" Funcionario
+Etapa "0,*" o-- "1" Supervisor
+
+@enduml
