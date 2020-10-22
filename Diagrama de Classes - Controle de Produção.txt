@@ -9,21 +9,22 @@ abstract class Material{
   -Texto descricao
   -Decimal valorUnitario
   -Decimal qtdEstoque
-  +void atualizarEstoque(Decimal qtd, Boleano entrada)
+  +atualizarEstoque(Decimal, Boleano)
 }
 
-class Produto{}
+class Produto{
+  +calcularMediaCusto(Lista<Producao>): Decimal
+}
 
 class MateriaPrima{}
 
 class Producao {
   -Inteiro id
+  -Texto codigo
   -Produto produto
-  -Lista<Etapa> etapas
+  -Lista<Processo> processos
   -Decimal qtdProduzida
   -Boleano finalizada
-  +Tempo calcularTempoProducao()
-  +Decimal calcularCustoProducao()
 }
 
 class MateriaUsada{
@@ -32,7 +33,7 @@ class MateriaUsada{
   -Decimal qtdUsada
 }
 
-class Etapa{
+class Processo{
   -Inteiro id
   -TipoEtapa tipo
   -Lista<MateriaUsada> materiasPrimas
@@ -40,11 +41,16 @@ class Etapa{
   -Supervisor supervisor
   -Tempo horaInicial
   -Tempo horaFinal
-  +Tempo calcularTempoEtapa()
-  +Decimal calcularCustoEtapa()
+  -Boleano finalizada
+  -Boleano aprovada
 }
 
-class TipoEtapa{
+interface Recurso{
+  +calcularTempoTotal(): Tempo
+  +calcularCustoTotal(): Decimal
+}
+
+class TipoProcesso{
   -Inteiro id
   -Texto codigo
   -Texto nome
@@ -58,7 +64,7 @@ class Funcionario{
 }
 
 class Supervisor{
-  
+  +aprovarProcesso(Processo)
 }
 
 class Cargo{
@@ -66,20 +72,23 @@ class Cargo{
   -Texto nome
 }
 
+Recurso <|.. Processo
+Recurso <|.. Producao
+
 Material <|-- Produto
 Material <|-- MateriaPrima
 
 Producao "1,*" o-- "1" Produto
-Producao "1" *-- "1,*" Etapa
+Producao "1" *-- "1,*" Processo
 
 MateriaUsada "0,*" o-- "1" MateriaPrima
 
 Funcionario "0,*" o-- "1" Cargo
 Funcionario <|-- Supervisor
 
-Etapa "0,*" o-- "1" TipoEtapa
-Etapa "1" *-- "0,*" MateriaUsada
-Etapa "0,*" o-- "1,*" Funcionario
-Etapa "0,*" o-- "1" Supervisor
+Processo "0,*" o-- "1" TipoProcesso
+Processo "1" *-- "0,*" MateriaUsada
+Processo "0,*" o-- "1,*" Funcionario
+Processo "0,*" o-- "1" Supervisor
 
 @enduml
