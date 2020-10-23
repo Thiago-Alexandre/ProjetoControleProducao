@@ -1,0 +1,39 @@
+html, body{
+	background-color: #47a385;
+	height: 100vh;
+	margin: 0px;
+	padding: 0px;
+}
+
+body{
+	display: flex;
+	flex-direction: column;
+}
+
+header, footer{
+	background-color: #336699;
+}
+
+nav{
+	background-color: #387594;
+}
+
+main{
+	flex: 1 0 auto;
+}
+
+section{
+	background-color: #3d858f;
+}
+
+footer{
+	flex-shrink: 0;
+}
+
+button{
+	background-color: #336699 !important;
+}
+
+table{
+	background-color: #d9ffd9;
+}

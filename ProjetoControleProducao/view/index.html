@@ -1,0 +1,165 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+	<head>  
+		<meta charset="utf-8">
+	   	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	   	<title>Tela Inicial</title>
+	   	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	</head>
+	<body>
+	   	<header class="container-fluid p-3 text-white">
+	   		<div class="row">
+				<div class="col-sm-1"></div>
+      			<div class="col-sm-10">
+      				<h1>Controle de Produção</h1>
+      			</div>
+      			<div class="col-sm-1"></div>
+      		</div>
+	    </header>
+	    <nav class="navbar navbar-expand-sm navbar-dark sticky-top">
+	    	<a class="navbar-brand" href="index.html">Início</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    			<span class="navbar-toggler-icon"></span>
+  			</button>
+  			<div class="collapse navbar-collapse" id="collapsibleNavbar">
+				<ul class="navbar-nav">
+			    	<li class="nav-item">
+			      		<a class="nav-link" href="novaProducao.html">Iniciar Produção</a>
+			    	</li>
+			    	<li class="nav-item">
+			      		<a class="nav-link" href="produtos.html">Produtos</a>
+			    	</li>
+			    	<li class="nav-item">
+			      		<a class="nav-link" href="materiasPrimas.html">Matérias-Primas</a>
+			    	</li>
+			    	<li class="nav-item">
+			      		<a class="nav-link" href="funcionarios.html">Funcionários</a>
+			    	</li>
+					<li class="nav-item dropdown">
+			      		<a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+			        		Outros
+			      		</a>
+			      		<div class="dropdown-menu">
+			        		<a class="dropdown-item" href="cargos.html">Cargos</a>
+			        		<a class="dropdown-item" href="tiposProcesso.html">Tipos de Processos</a>
+			      		</div>
+			    	</li>
+			  	</ul>
+  			</div>
+		</nav>
+		<main class="container-fluid p-3 text-white">
+			<section class="rounded p-3 m-2">
+  				<form action="#" id="formFiltro">
+  					<div class="row">
+  						<div class="col-sm-1"></div>
+  						<div class="col-sm-10"><h3>Filtros:</h3></div>
+  						<div class="col-sm-1"></div>
+  					</div>
+  					<div class="row">
+  						<div class="col-sm-1"></div>
+  						<div class="col-sm-5 mb-2">
+							<label>Estado da Produção:</label>
+							<br>
+	      					<div class="form-check-inline">
+						      	<label class="form-check-label" for="radio1">
+						        	<input type="radio" class="form-check-input" id="radio1" name="optradio" value="producao">Em Produção
+						      	</label>
+						    </div>
+						    <div class="form-check-inline">
+						      	<label class="form-check-label" for="radio2">
+						        	<input type="radio" class="form-check-input" id="radio2" name="optradio" value="finalizada">Finalizada
+						      	</label>
+						    </div>
+  						</div>
+  						<div class="col-sm-5">
+							<label for="filtroPorProduto">Por Produto:</label>
+						    <select class="form-control mb-2 mr-sm-2" id="filtroPorProduto" name="filtroProdutos">
+						    	<option>Selecione um produto</option>
+						    	<option>Produto1</option>
+						    	<option>Produto2</option>
+						    	<option>Produto3</option>
+						    </select>
+  						</div>
+  						<div class="col-sm-1"></div>
+  					</div>
+  					<div class="row">
+  						<div class="col-sm-1"></div>
+  						<div class="col-sm-10">
+  							<button type="submit" class="btn btn-dark mt-3 form-group mb-1">Pesquisar</button>
+  						</div>
+  						<div class="col-sm-1"></div>
+  					</div>
+				</form>
+      		</section>
+      		<section class="row rounded p-3 m-2">
+	   			<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+      				<h2>Lista de Produções:</h2>
+      				<form id="formListaProducao">
+      					<div class="table-responsive">
+						    <table class="table table-hover" >
+						     	<thead class="thead-dark">
+							        <tr>
+							          <th>Código</th>
+							          <th>Produto</th>
+							          <th>Quantidade</th>
+							          <th>Estado</th>
+							          <th>Custo Total</th>
+							          <th>Tempo Total</th>
+							        </tr>
+						      	</thead>
+						      	<tbody>
+						      		<tr>
+						      			<td>PROD01</td>
+						      			<td>Produto1</td>
+						      			<td>100</td>
+						      			<td>Finalizada</td>
+						      			<td>R$ 1000,00</td>
+						      			<td>12 horas</td>
+						      		</tr>
+						      		<tr>
+						      			<td>PROD02</td>
+						      			<td>Produto2</td>
+						      			<td>10</td>
+						      			<td>Finalizada</td>
+						      			<td>R$ 2000,00</td>
+						      			<td>30 horas</td>
+						      		</tr>
+						      		<tr>
+						      			<td>PROD03</td>
+						      			<td>Produto1</td>
+						      			<td>150</td>
+						      			<td>Em Produção</td>
+						      			<td>R$ 1100,00</td>
+						      			<td>14 horas</td>
+						      		</tr>
+						      		<tr>
+						      			<td>PROD04</td>
+						      			<td>Produto3</td>
+						      			<td>1000</td>
+						      			<td>Em Produção</td>
+						      			<td>R$ 580,00</td>
+						      			<td>6 horas</td>
+						      		</tr>
+						      	</tbody>
+						    </table>
+						  </div>
+      				</form>
+      			</div>
+      			<div class="col-sm-1"></div>
+      		</section>
+	    </main>
+	    <footer class="container-fluid text-white p-3">
+	   		<div class="row">
+	   			<div class="col-sm-2"></div>
+				<div class="col-sm-10">
+      				<h4>Trabalho realizado para a disciplina de Desenvolvimento de Sistemas para Python, por Thiago Alexandre Buerger</h4>
+      			</div>
+      		</div>
+	    </footer>
+	</body>
+</html>
