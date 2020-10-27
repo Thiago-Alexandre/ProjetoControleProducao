@@ -35,17 +35,16 @@ class MateriaUsada{
 
 class Processo{
   -Inteiro id
-  -TipoEtapa tipo
+  -TipoProcesso tipo
   -Lista<MateriaUsada> materiasPrimas
   -Lista<Funcionario> funcionarios
   -Supervisor supervisor
   -Tempo horaInicial
   -Tempo horaFinal
-  -Boleano finalizada
-  -Boleano aprovada
+  -Boleano aprovado
 }
 
-interface Recurso{
+interface RecursoGasto{
   +calcularTempoTotal(): Tempo
   +calcularCustoTotal(): Decimal
 }
@@ -72,8 +71,28 @@ class Cargo{
   -Texto nome
 }
 
-Recurso <|.. Processo
-Recurso <|.. Producao
+note left of Material : Este modelo não implementa o controle de Compra de MateriaPrima\n e nem a Venda de Produto, mas o método atualizarEstoque() pode\n ser utilizado normalmente caso esses módulos forem implementados.
+
+note top of Material : MateriaPrima e Produto apresentam atributos \ne métodos em comum, ou seja, eles são um \ntipo de Material, que é uma classe abstrata.
+
+note "Produto e MateriaPrima serão objetos pré-cadastrados \nno sistema, sendo utilizados pela Produção e Processo. \nAssim, é possível cadastrar um Produto ou MateriaPrima \ne não existir uma Produção deste Produto e nem o uso \nda MateriaPrima." as N1
+Produto .. N1
+N1 .. MateriaPrima
+
+note "Cargo e TipoProcesso serão objetos pré-cadastrados \nno sistema, sendo utilizados pelo Funcionario e Processo." as N2
+Cargo .. N2
+N2 .. TipoProcesso
+
+note bottom of MateriaUsada : MateriaUsada indica qual MateriaPrima foi gasta e a quantidade\n usada, para realizar o controle de estoque. Caso o Processo ou\n a Producao sejam excluídos, a MateriaUsada também será, mas\n a MateriaPrima continuará cadastrada no sistema.
+
+note bottom of Supervisor: Supervisor é um tipo específico de Funcionario.
+
+note left of Processo: Caso a Producao seja excluída, o Processo também deixará de existir.
+
+note left of RecursoGasto: A Interface RecursoGasto compreende métodos\n com o mesmo tipo de retorno utilizados pela\n Producao e pelo Processo, mas implementados\n de forma diferente.
+
+RecursoGasto <|.. Processo
+RecursoGasto <|.. Producao
 
 Material <|-- Produto
 Material <|-- MateriaPrima
