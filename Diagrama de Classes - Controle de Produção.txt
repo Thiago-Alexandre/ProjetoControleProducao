@@ -4,66 +4,25 @@ title Controle de Produção - Class Diagram
 
 abstract class Material{
   -Inteiro id
-  -Texto codigo
   -Texto nome
   -Texto descricao
-  -Decimal valorUnitario
-  -Decimal qtdEstoque
+  -Decimal quantidadeEstoque
   +atualizarEstoque(Decimal, Boleano)
 }
 
 class Produto{
-  +calcularMediaCusto(Lista<Producao>): Decimal
+  -Decimal valorVenda
+  +calcularValorProducao(): Decimal
 }
 
-class MateriaPrima{}
-
-class Producao {
-  -Inteiro id
-  -Texto codigo
-  -Produto produto
-  -Lista<Processo> processos
-  -Decimal qtdProduzida
-  -Boleano finalizada
-}
-
-class MateriaUsada{
-  -Inteiro id
-  -MateriaPrima materiaPrima
-  -Decimal qtdUsada
-}
-
-class Processo{
-  -Inteiro id
-  -TipoProcesso tipo
-  -Lista<MateriaUsada> materiasPrimas
-  -Lista<Funcionario> funcionarios
-  -Supervisor supervisor
-  -Tempo horaInicial
-  -Tempo horaFinal
-  -Boleano aprovado
-}
-
-interface RecursoGasto{
-  +calcularTempoTotal(): Tempo
-  +calcularCustoTotal(): Decimal
+class MateriaPrima{
+  -Decimal valorUnitario
 }
 
 class TipoProcesso{
   -Inteiro id
-  -Texto codigo
   -Texto nome
   -Texto descricao
-}
-
-class Funcionario{
-  -Inteiro id
-  -Texto nome
-  -Cargo cargo
-}
-
-class Supervisor{
-  +aprovarProcesso(Processo)
 }
 
 class Cargo{
@@ -71,25 +30,53 @@ class Cargo{
   -Texto nome
 }
 
-note left of Material : Este modelo não implementa o controle de Compra de MateriaPrima\n e nem a Venda de Produto, mas o método atualizarEstoque() pode\n ser utilizado normalmente caso esses módulos forem implementados.
+class Funcionario{
+  -Inteiro id
+  -Texto nome
+}
 
-note top of Material : MateriaPrima e Produto apresentam atributos \ne métodos em comum, ou seja, eles são um \ntipo de Material, que é uma classe abstrata.
+class MaterialUsado{
+  -Inteiro id
+  -Decimal quantidadeUsada
+}
 
-note "Produto e MateriaPrima serão objetos pré-cadastrados \nno sistema, sendo utilizados pela Produção e Processo. \nAssim, é possível cadastrar um Produto ou MateriaPrima \ne não existir uma Produção deste Produto e nem o uso \nda MateriaPrima." as N1
+class Processo{
+  -Inteiro id
+  -Tempo horaInicial
+  -Tempo horaFinal
+  -Boleano aprovado
+}
+
+class FuncionarioNoProcesso{
+  -Integer id
+}
+
+class Producao {
+  -Inteiro id
+  -Decimal qtdProduzida
+  -Boleano finalizada
+}
+
+interface RecursoGasto{
+  +calcularTempoTotal(): Tempo
+  +calcularCustoTotal(): Decimal
+}
+
+note "Este modelo não implementa o controle de Compra de MateriaPrima \ne nem a Venda de Produto, mas o método atualizarEstoque() pode \nser utilizado normalmente caso esses módulos forem implementados." as N0
+
+note left of Material : MateriaPrima e Produto apresentam atributos e métodos em comum, \nou seja, eles são um tipo de Material, que é uma classe abstrata.
+
+note "Produto e MateriaPrima serão objetos pré-cadastrados no sistema, \nsendo utilizados pela Produção e Processo. Assim, é possível \ncadastrar um Produto ou MateriaPrima e não existir uma Produção \ndeste Produto e nem o uso da MateriaPrima." as N1
 Produto .. N1
 N1 .. MateriaPrima
 
-note "Cargo e TipoProcesso serão objetos pré-cadastrados \nno sistema, sendo utilizados pelo Funcionario e Processo." as N2
-Cargo .. N2
-N2 .. TipoProcesso
+note bottom of TipoProcesso : Será pré-cadastrado no sistema, sendo utilizado pelo Processo.
 
-note bottom of MateriaUsada : MateriaUsada indica qual MateriaPrima foi gasta e a quantidade\n usada, para realizar o controle de estoque. Caso o Processo ou\n a Producao sejam excluídos, a MateriaUsada também será, mas\n a MateriaPrima continuará cadastrada no sistema.
+note top of MaterialUsado : Indica qual Material foi gasto e a quantidade que foi utilizada, \npara realizar o controle de estoque do Material. É referenciado \num Material porque um Produto produzido também pode ser usado na \nprodução de um novo Produto. Caso o Processo ou a Producao sejam \nexcluídos, o MaterialUsado também será, mas o Material continuará \ncadastrado no sistema.
 
-note bottom of Supervisor: Supervisor é um tipo específico de Funcionario.
+note top of Processo : Caso a Producao seja excluída, o Processo também deixará de existir.
 
-note left of Processo: Caso a Producao seja excluída, o Processo também deixará de existir.
-
-note left of RecursoGasto: A Interface RecursoGasto compreende métodos\n com o mesmo tipo de retorno utilizados pela\n Producao e pelo Processo, mas implementados\n de forma diferente.
+note top of RecursoGasto : Compreende métodos com o mesmo tipo de retorno utilizados pela \nProducao e pelo Processo, mas implementados de forma diferente.
 
 RecursoGasto <|.. Processo
 RecursoGasto <|.. Producao
@@ -97,17 +84,18 @@ RecursoGasto <|.. Producao
 Material <|-- Produto
 Material <|-- MateriaPrima
 
-Producao "1,*" o-- "1" Produto
-Producao "1" *-- "1,*" Processo
+Producao "produto" o-- Produto
 
-MateriaUsada "0,*" o-- "1" MateriaPrima
+Funcionario "cargo" o-- Cargo
 
-Funcionario "0,*" o-- "1" Cargo
-Funcionario <|-- Supervisor
+Processo "supervisor" o-- Funcionario
+Processo "tipo" o-- TipoProcesso
+Processo "producao" *-- Producao
 
-Processo "0,*" o-- "1" TipoProcesso
-Processo "1" *-- "0,*" MateriaUsada
-Processo "0,*" o-- "1,*" Funcionario
-Processo "0,*" o-- "1" Supervisor
+MaterialUsado "material" o-- Material
+MaterialUsado "processo" *-- Processo
+
+FuncionarioNoProcesso "funcionario" o-- Funcionario
+FuncionarioNoProcesso "processo" *-- Processo
 
 @enduml
