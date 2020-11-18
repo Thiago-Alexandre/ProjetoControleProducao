@@ -8,6 +8,7 @@
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   		<script type="text/javascript" src="js/main.js"></script>
+  		<script type="text/javascript" src="js/index.js"></script>
 	   	<title>Tela Inicial</title>
 	   	<link rel="stylesheet" type="text/css" href="css/main.css" />
 	</head>
@@ -40,19 +41,14 @@
   						</div>
   						<div class="col-sm-5">
 							<label for="filtroPorProduto">Por Produto:</label>
-						    <select class="form-control mb-2 mr-sm-2" id="filtroPorProduto" name="filtroProdutos">
-						    	<option>Selecione um produto</option>
-						    	<option>Produto1</option>
-						    	<option>Produto2</option>
-						    	<option>Produto3</option>
-						    </select>
+						    <select class="form-control mb-2 mr-sm-2" id="filtroPorProduto" name="filtroProdutos"></select>
   						</div>
   						<div class="col-sm-1"></div>
   					</div>
   					<div class="row">
   						<div class="col-sm-1"></div>
   						<div class="col-sm-10">
-  							<button type="submit" class="btn btn-dark mt-3 form-group mb-1">Pesquisar</button>
+  							<button type="button" class="btn btn-dark mt-3 form-group mb-1">Pesquisar</button>
   						</div>
   						<div class="col-sm-1"></div>
   					</div>
@@ -75,40 +71,7 @@
 							          <th>Tempo Total</th>
 							        </tr>
 						      	</thead>
-						      	<tbody>
-						      		<tr>
-						      			<td>PROD01</td>
-						      			<td>Produto1</td>
-						      			<td>100</td>
-						      			<td>Finalizada</td>
-						      			<td>R$ 1000,00</td>
-						      			<td>12 horas</td>
-						      		</tr>
-						      		<tr>
-						      			<td>PROD02</td>
-						      			<td>Produto2</td>
-						      			<td>10</td>
-						      			<td>Finalizada</td>
-						      			<td>R$ 2000,00</td>
-						      			<td>30 horas</td>
-						      		</tr>
-						      		<tr>
-						      			<td>PROD03</td>
-						      			<td>Produto1</td>
-						      			<td>150</td>
-						      			<td>Em Produção</td>
-						      			<td>R$ 1100,00</td>
-						      			<td>14 horas</td>
-						      		</tr>
-						      		<tr>
-						      			<td>PROD04</td>
-						      			<td>Produto3</td>
-						      			<td>1000</td>
-						      			<td>Em Produção</td>
-						      			<td>R$ 580,00</td>
-						      			<td>6 horas</td>
-						      		</tr>
-						      	</tbody>
+						      	<tbody id="listaProducao"></tbody>
 						    </table>
 						  </div>
       				</form>
