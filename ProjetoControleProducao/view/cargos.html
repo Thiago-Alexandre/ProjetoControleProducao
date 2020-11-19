@@ -1,68 +1,68 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="pt-br">
-	<head>  
-		<meta charset="utf-8">
-	   	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  		<script type="text/javascript" src="js/main.js"></script>
-  		<script type="text/javascript" src="js/cargo.js"></script>
-	   	<title>Cargos</title>
-	   	<link rel="stylesheet" type="text/css" href="css/main.css" />
-	</head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/cargo.js"></script>
+    <title>Cargos</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+  </head>
 	<body>
-	   	<div id="cabecalho"></div>
-	    <div id="menu"></div>
+    <div id="cabecalho"></div>
+    <div id="menu"></div>
 		<main class="container-fluid p-3 text-white">
 			<section class="rounded p-3 m-2">
-  				<form action="#" id="formCargo">
-  					<div class="row">
-  						<div class="col-sm-1"></div>
-  						<div class="col-sm-10"><h3>Informações sobre o Cargo:</h3></div>
-  						<div class="col-sm-1"></div>
-  					</div>
-  					<div class="row">
-  						<div class="col-sm-1"></div>
-  						<div class="col-sm-10">
-							<div class="form-group">
-							    <label for="codigo">Nome:</label>
-							    <input type="text" class="form-control" placeholder="Informe o nome do cargo" id="nome" required maxlength="50">
+        <form action="#" id="formCargo">
+          <div class="row">
+            <div class="col-sm-1"></div>
+  					<div class="col-sm-10"><h3>Informações sobre o Cargo:</h3></div>
+  					<div class="col-sm-1"></div>
+          </div>
+          <div class="row">
+  					<div class="col-sm-1"></div>
+  					<div class="col-sm-10">
+						  <div class="form-group">
+							  <label for="codigo">Nome:</label>
+							  <input type="text" class="form-control" placeholder="Informe o nome do cargo" id="nome" required maxlength="50">
 							</div>
-  						</div>
-  						<div class="col-sm-1"></div>
-  					</div>
-  					<div class="row">
-  						<div class="col-sm-1"></div>
-  						<div class="col-sm-10">
-  							<button type="button" id="salvar" class="btn btn-dark mt-3 form-group mb-1">Salvar</button>
-  							<button type="button" id="cancelar" class="btn btn-dark mt-3 form-group mb-1">Cancelar</button>
-  						</div>
-  						<div class="col-sm-1"></div>
-  					</div>
+            </div>
+            <div class="col-sm-1"></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10">
+              <button type="button" id="salvar" class="btn btn-dark mt-3 form-group mb-1">Salvar</button>
+              <button type="button" id="cancelar" class="btn btn-dark mt-3 form-group mb-1">Cancelar</button>
+            </div>
+            <div class="col-sm-1"></div>
+          </div>
 				</form>
-      		</section>
-      		<section class="row rounded p-3 m-2">
-	   			<div class="col-sm-1"></div>
+      </section>
+      <section class="row rounded p-3 m-2">
+        <div class="col-sm-1"></div>
 				<div class="col-sm-10">
-      				<h2>Lista de Cargos:</h2>
-      				<form id="formListaCargo">
-      					<div class="table-responsive">
-						    <table class="table table-hover" >
-						     	<thead class="thead-dark">
-							        <tr>
-							          <th>Nome</th>
-							        </tr>
-						      	</thead>
-						      	<tbody id="listaCargos"></tbody>
-						    </table>
-						  </div>
-      				</form>
-      			</div>
-      			<div class="col-sm-1"></div>
-      		</section>
-	    </main>
-	    <div id="rodape"></div>
+          <h2>Lista de Cargos:</h2>
+          <form id="formListaCargo">
+            <div class="table-responsive">
+              <table class="table table-hover" >
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Nome</th>
+                  </tr>
+                </thead>
+                <tbody id="listaCargos"></tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-1"></div>
+      </section>
+    </main>
+    <div id="rodape"></div>
 	</body>
 </html>

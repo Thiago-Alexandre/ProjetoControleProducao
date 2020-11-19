@@ -1,7 +1,7 @@
 import sys 
 import os
-sys.path.append(os.path.abspath("./config"))
-from Config import *
+sys.path.append(os.path.abspath("./"))
+from config.Config import *
 
 class TipoProcesso(db.Model):
     id = db.Column(db.Integer, primary_key=True)
