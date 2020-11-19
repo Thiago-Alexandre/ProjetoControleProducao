@@ -16,6 +16,16 @@ Neste contexto não estão sendo controladas as vendas dos produtos e nem a comp
 
 <img src="Diagrama de classes - Controle de Produção.png" heigth="500" width="800">
 
+### Sistema em execução
+
+Até o momento, somente as páginas de Cargos e Tipos de Processo estão em funcionamento, por não requererem relacionamento com outras classes.
+
+<img src="Prints/servidor.png" heigth="300" width="800">
+
+<img src="Prints/tela_cargos.png" heigth="800" width="500">
+
+<img src="Prints/tela_tipos_processo.png" heigth="500" width="800">
+
 ### Observação
 
 Para que o reaproveitamento de HTML das páginas funcione, é necessário adicionar o projeto num servidor e acessar por localhost, e não acessar as páginas diretamente pelo navegador.
