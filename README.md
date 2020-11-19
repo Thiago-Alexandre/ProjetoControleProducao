@@ -20,11 +20,11 @@ Neste contexto não estão sendo controladas as vendas dos produtos e nem a comp
 
 Até o momento, somente as páginas de Cargos e Tipos de Processo estão em funcionamento, por não requererem relacionamento com outras classes.
 
-<img src="Prints/servidor.png" heigth="300" width="800">
+<img src="Prints/servidor.PNG" heigth="300" width="800">
 
-<img src="Prints/tela_cargos.png" heigth="800" width="500">
+<img src="Prints/tela_cargos.PNG" heigth="800" width="500">
 
-<img src="Prints/tela_tipos_processo.png" heigth="500" width="800">
+<img src="Prints/tela_tipos_processo.PNG" heigth="500" width="800">
 
 ### Observação
 
