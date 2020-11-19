@@ -12,7 +12,7 @@ Ao ser finalizado, um processo pode ser aprovado ou não. Assim, a produção po
 
 Neste contexto não estão sendo controladas as vendas dos produtos e nem a compra de matéria-prima, que poderá ser um módulo implementado futuramente.
 
-![Diagrama de Classes](Diagrama de classes - Controle de Produção.png)
+![](Diagrama de classes - Controle de Produção.png)
 
 ### Observação
 
