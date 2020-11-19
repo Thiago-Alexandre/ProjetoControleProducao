@@ -12,6 +12,8 @@ Ao ser finalizado, um processo pode ser aprovado ou não. Assim, a produção po
 
 Neste contexto não estão sendo controladas as vendas dos produtos e nem a compra de matéria-prima, que poderá ser um módulo implementado futuramente.
 
+![Diagrama de Classes](Diagrama de classes - Controle de Produção.png)
+
 ### Observação
 
 Para que o reaproveitamento de HTML das páginas funcione, é necessário adicionar o projeto num servidor e acessar por localhost, e não acessar as páginas diretamente pelo navegador.
