@@ -3,7 +3,10 @@ from Models import Cargo, TipoProcesso
 
 @app.route("/listarCargos")
 def listar_cargos():
-    cargos = db.session.query(Cargo).all()
+    try:
+        cargos = db.session.query(Cargo).all()
+    except:
+        cargos = []
     cargos_em_json = [ c.json() for c in cargos ]
     resposta = jsonify(cargos_em_json)
     resposta.headers.add("Access-Control-Allow-Origin", "*")
@@ -11,7 +14,10 @@ def listar_cargos():
 
 @app.route("/listarTiposProcesso")
 def listar_tipos_processo():
-    tipos_processo = db.session.query(TipoProcesso).all()
+    try:
+        tipos_processo = db.session.query(TipoProcesso).all()
+    except:
+        tipos_processo = []
     tipos_processo_em_json = [ t.json() for t in tipos_processo ]
     resposta = jsonify(tipos_processo_em_json)
     resposta.headers.add("Access-Control-Allow-Origin", "*")
