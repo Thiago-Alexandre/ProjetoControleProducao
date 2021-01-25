@@ -1,8 +1,9 @@
 from Config import *
 from Models import Cargo, TipoProcesso
 
+# ************************************* Rota para listar todos os Cargos ******************************
 @app.route("/listarCargos")
-def listar_cargos():
+def listarCargos():
     try:
         cargos = db.session.query(Cargo).all()
     except:
@@ -11,9 +12,11 @@ def listar_cargos():
     resposta = jsonify(cargos_em_json)
     resposta.headers.add("Access-Control-Allow-Origin", "*")
     return resposta
+# *****************************************************************************************************
 
+# ************************** Rota para listar todos os Tipos de Processo ******************************
 @app.route("/listarTiposProcesso")
-def listar_tipos_processo():
+def listarTiposProcesso():
     try:
         tipos_processo = db.session.query(TipoProcesso).all()
     except:
@@ -22,7 +25,10 @@ def listar_tipos_processo():
     resposta = jsonify(tipos_processo_em_json)
     resposta.headers.add("Access-Control-Allow-Origin", "*")
     return resposta
+# *****************************************************************************************************
 
+# ************************************* Rota para adicionar novo Cargo ********************************
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!! Não verifica se o cargo já está salvo no banco !!!!!!!!!!!!!!!!!!!!!!!!
 @app.route("/incluirCargo", methods=['post']) 
 def incluirCargo(): 
     resposta = jsonify({"resultado": "ok", "detalhes": "ok"}) 
@@ -35,5 +41,20 @@ def incluirCargo():
         resposta = jsonify({"resultado":"erro", "detalhes":str(e)}) 
     resposta.headers.add("Access-Control-Allow-Origin", "*") 
     return resposta
+# *****************************************************************************************************
+
+# ************************************* Rota para excluir um Cargo ************************************
+# !!!!!!!!!!!!!!!!!!!!!!!!! Não verifica se o Cargo está vinculado em um Funcionário !!!!!!!!!!!!!!!!!!
+@app.route("/excluirCargo/<int:cargo_id>", methods=['DELETE'])
+def excluirCargo(cargo_id):
+    resposta = jsonify({"resultado": "ok", "detalhes": "ok"})
+    try:
+        Cargo.query.filter(Cargo.id == cargo_id).delete()
+        db.session.commit()
+    except Exception as e:
+        resposta = jsonify({"resultado":"erro", "detalhes":str(e)})
+    resposta.headers.add("Access-Control-Allow-Origin", "*")
+    return resposta
+# *****************************************************************************************************
 
 app.run(debug=True)

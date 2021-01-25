@@ -17,21 +17,13 @@ $(document).ready(function(){
             } else{
                 var table = "";
                 for(x in data){
-                    table += "<tr class='linha'><td>" + data[x].id + "</td><td>" + data[x].nome + "</td></tr>";
+                    table += "<tr class='linha'>" +
+                             "<td>" + data[x].nome + "</td>" + 
+                             "<td><a href=# id='excluir_" + data[x].id + "' class='excluir_cargo'>" + 
+                             "<img src='img/excluir.png' alt='Excluir Cargo' title='Excluir cargo'>" + 
+                             "</a></td></tr>";
                 }
                 $("#listaCargos").html(table);
-                /* 
-                var tabela = document.getElementById("listaCargos");
-                var linhas = tabela.getElementsByTagName("tr");
-                for(var i = 0; i < linhas.length; i++){
-                    linhas[i].addEventListener("click", function(){
-                        var dados = this.getElementsByTagName("td");
-                        $("#idCargo").val(dados[0].innerHTML);
-                        $("#nomeCargo").val(dados[1].innerHTML);
-                        $("#cargoModal").click();
-                    });
-                }
-                */
             }
         });
     };
@@ -48,14 +40,16 @@ $(document).ready(function(){
                 dataType: "json",
                 contentType: "application/json",
                 data: dados, 
-                success: sucesso,
+                success: sucessoSalvarCargo,
                 error: erroAoIncluir 
             });
 
-            function sucesso (retorno) {
-                if (retorno.resultado == "ok") { 
-                    alert("Sucesso!");
+            function sucessoSalvarCargo (retorno) {
+                if (retorno.resultado == "ok") {
+                    $('#cargoModal').modal('hide'); 
+                    alert("Cargo salvo com sucesso!");
                     $("#nomeCargo").val("");
+                    carregar();
                 } else {
                     alert(retorno.resultado + ":" + retorno.detalhes);
                     $("#nomeCargo").val("");
@@ -66,6 +60,32 @@ $(document).ready(function(){
                 alert("ERRO: "+retorno.resultado + ":" + retorno.detalhes);
                 $("#nomeCargo").val("");
             }
+        }
+    });
+
+    $(document).on("click", ".excluir_cargo", function() { 
+        var componente_clicado = $(this).attr('id'); 
+        var nome_icone = "excluir_"; 
+        var id_cargo = componente_clicado.substring(nome_icone.length); 
+        $.ajax({ 
+            url: "http://localhost:5000/excluirCargo/" + id_cargo, 
+            type: "DELETE",
+            dataType: "json",
+            success: sucessoExcluirCargo, 
+            error: erroAoExcluir 
+        });
+
+        function sucessoExcluirCargo (retorno) {
+            if (retorno.resultado == "ok") { 
+                alert("Cargo removido com sucesso!");
+                carregar();
+            } else {
+                alert(retorno.resultado + ":" + retorno.detalhes);
+            }
+        }
+
+        function erroAoExcluir (retorno) { 
+            alert("ERRO: "+retorno.resultado + ":" + retorno.detalhes); 
         }
     });
 });
