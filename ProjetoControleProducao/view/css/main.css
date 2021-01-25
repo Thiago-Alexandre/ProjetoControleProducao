@@ -22,18 +22,28 @@ main{
 	flex: 1 0 auto;
 }
 
-section{
+section, .modal-footer{
 	background-color: #3d858f;
+	border: 0px;
 }
 
 footer{
 	flex-shrink: 0;
 }
 
-button{
+.botao{
 	background-color: #336699 !important;
 }
 
 table{
 	background-color: #d9ffd9;
+}
+
+.modal-body{
+	background-color: #47a385;
+}
+
+.modal-header{
+	background-color: #336699;
+	border: 0px;
 }

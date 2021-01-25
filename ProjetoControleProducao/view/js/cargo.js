@@ -4,21 +4,10 @@ $(document).ready(function(){
         carregar();
     })
 
-    $("#cancelar").click(function(){
-        limpar();
-    });
-
-    $("#salvar").click(function(){
-    	if($("#nome").val() === ""){
-            alert("Campo vazio!");
-            $("#nome").focus();
-        }
-    });
-
-    function limpar(){
+    $("#pesquisar").click(function(){
+        alert("Pesquisa em manutenção!");
         $("#nome").val("");
-        $("#nome").focus();
-    }
+    });
 
     function carregar(){
         var url = "http://localhost:5000/listarCargos";
@@ -28,19 +17,55 @@ $(document).ready(function(){
             } else{
                 var table = "";
                 for(x in data){
-                    table += "<tr class='linha'><td>" + data[x].nome + "</td></tr>";
+                    table += "<tr class='linha'><td>" + data[x].id + "</td><td>" + data[x].nome + "</td></tr>";
                 }
                 $("#listaCargos").html(table);
-
+                /* 
                 var tabela = document.getElementById("listaCargos");
                 var linhas = tabela.getElementsByTagName("tr");
                 for(var i = 0; i < linhas.length; i++){
                     linhas[i].addEventListener("click", function(){
                         var dados = this.getElementsByTagName("td");
-                        $("#nome").val(dados[0].innerHTML);
+                        $("#idCargo").val(dados[0].innerHTML);
+                        $("#nomeCargo").val(dados[1].innerHTML);
+                        $("#cargoModal").click();
                     });
                 }
+                */
             }
         });
     };
+
+    $(document).on("click", "#salvar", function() {
+        nome = $("#nomeCargo").val();
+        if(nome === ""){
+            alert("Campo vazio!");
+        } else{
+            var dados = JSON.stringify({ nome: nome}); 
+            $.ajax({ 
+                url: "http://localhost:5000/incluirCargo", 
+                type: "POST", 
+                dataType: "json",
+                contentType: "application/json",
+                data: dados, 
+                success: sucesso,
+                error: erroAoIncluir 
+            });
+
+            function sucesso (retorno) {
+                if (retorno.resultado == "ok") { 
+                    alert("Sucesso!");
+                    $("#nomeCargo").val("");
+                } else {
+                    alert(retorno.resultado + ":" + retorno.detalhes);
+                    $("#nomeCargo").val("");
+                }            
+            }
+
+            function erroAoIncluir (retorno) {
+                alert("ERRO: "+retorno.resultado + ":" + retorno.detalhes);
+                $("#nomeCargo").val("");
+            }
+        }
+    });
 });

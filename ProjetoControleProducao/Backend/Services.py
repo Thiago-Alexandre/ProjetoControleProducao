@@ -23,4 +23,17 @@ def listar_tipos_processo():
     resposta.headers.add("Access-Control-Allow-Origin", "*")
     return resposta
 
+@app.route("/incluirCargo", methods=['post']) 
+def incluirCargo(): 
+    resposta = jsonify({"resultado": "ok", "detalhes": "ok"}) 
+    dados = request.get_json() 
+    try:
+        new = Cargo(**dados) 
+        db.session.add(new)
+        db.session.commit()
+    except Exception as e: 
+        resposta = jsonify({"resultado":"erro", "detalhes":str(e)}) 
+    resposta.headers.add("Access-Control-Allow-Origin", "*") 
+    return resposta
+
 app.run(debug=True)
