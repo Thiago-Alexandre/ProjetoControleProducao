@@ -18,13 +18,11 @@ Neste contexto não estão sendo controladas as vendas dos produtos e nem a comp
 
 ### Sistema em execução
 
-Até o momento, somente as páginas de Cargos e Tipos de Processo estão em funcionamento, por não requererem relacionamento com outras classes.
+Até o momento, a página de Cargos está listando e permitindo a adição e exclusão de Cargos. Entretanto, mesmo com a classe Funcionario implementada, a exclusão de Cargos ainda não verifica se o cargo excluído está vinculado a algum Funcionario.
 
-<img src="Prints/servidor.PNG" heigth="300" width="800">
+<img src="PrintsAV2/Tela_Cargos.JPG" heigth="300" width="800">
 
-<img src="Prints/tela_cargos.PNG" heigth="800" width="500">
-
-<img src="Prints/tela_tipos_processo.PNG" heigth="500" width="800">
+<img src="Prints/Tela_Novo_Cargo.JPG" heigth="800" width="500">
 
 ### Observação
 
