@@ -22,7 +22,7 @@ Até o momento, a página de Cargos está listando e permitindo a adição e exc
 
 <img src="PrintsAV2/Tela_cargos.JPG" heigth="800" width="500">
 
-<img src="Prints/Tela_Novo_Cargo.JPG" heigth="800" width="500">
+<img src="PrintsAV2/Tela_Novo_Cargo.JPG" heigth="800" width="500">
 
 ### Observação
 
