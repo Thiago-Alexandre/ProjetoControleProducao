@@ -7,16 +7,18 @@ abstract class Material{
   -Texto nome
   -Texto descricao
   -Decimal quantidadeEstoque
+  -Decimal valorUnitario
   +atualizarEstoque(Decimal, Boleano)
 }
 
 class Produto{
   -Decimal valorVenda
   +calcularValorProducao(): Decimal
+  +calcularValorVenda(): Decimal
 }
 
 class MateriaPrima{
-  -Decimal valorUnitario
+  -Texto fornecedor
 }
 
 class TipoProcesso{
@@ -45,6 +47,7 @@ class Processo{
   -Tempo horaInicial
   -Tempo horaFinal
   -Boleano aprovado
+  +finalizarProcesso(Boleano)
 }
 
 class FuncionarioNoProcesso{
