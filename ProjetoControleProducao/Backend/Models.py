@@ -208,16 +208,30 @@ class Producao(db.Model):
     finalizada = db.Column(db.Boolean, nullable=False)
     # *******************************************************************************************
 
+    # ********************* Lista de processos de cada Producao *********************************
+    processos = db.relationship("Processo", primaryjoin="Producao.id==Processo.producao_id")
+    # *******************************************************************************************
+
     # **************** Método calcularTempoTotal da Classe Producao *****************************
     def calcular_tempo_total(self):
-        # Realizar calculo
-        return None
+        tempoTotal = datetime.utcnow() - datetime.utcnow()
+        for p in self.processos:
+            if p.calcular_tempo_total() == None:
+                return None
+            else:
+                tempoTotal += p.calcular_tempo_total()
+        return tempoTotal
     # *******************************************************************************************
 
     # **************** Método calcularCustoTotal() da Classe Producao ***************************
     def calcular_custo_total(self):
-        # Realizar calculo
-        return None
+        custoTotal = 0
+        for p in self.processos:
+            if p.calcular_custo_total() == None:
+                return None
+            else:
+                custoTotal += p.calcular_custo_total()
+        return custoTotal
     # *******************************************************************************************
 
     # *********************** toString da classe Producao ***************************************
@@ -262,6 +276,10 @@ class Processo(db.Model):
     aprovado = db.Column(db.Boolean, nullable=False)
     # *******************************************************************************************
 
+    # ****************** Lista de Materiais utilizados em cada Processo *************************
+    materiais = db.relationship("MaterialUsado", primaryjoin="Processo.id==MaterialUsado.processo_id")
+    # *******************************************************************************************
+
     # **************** Método finalizarProcesso da Classe Processo *****************************
     def finalizar_processo(self, aprovado):
         self.horaFinal = datetime.utcnow()
@@ -278,8 +296,11 @@ class Processo(db.Model):
 
     # **************** Método calcularCustoTotal() da Classe Processo ***************************
     def calcular_custo_total(self):
-        # Realizar calculo
-        return None
+        custoTotal = 0
+        for m in self.materiais:
+            custo = m.material.valorUnitario * m.quantidadeUsada
+            custoTotal += custo
+        return custoTotal
     # *******************************************************************************************
 
     # *********************** toString da classe Processo ***************************************
@@ -447,7 +468,7 @@ if __name__ == "__main__":
     processos[3].finalizar_processo(True)
     processos[4].finalizar_processo(True)
     processos[5].finalizar_processo(False)
-    processos[5].finalizar_processo(True)
+    processos[6].finalizar_processo(True)
 
     materiaisUsados = []
     materiaisUsados.append(MaterialUsado(processo = processos[0], material = materias[0], quantidadeUsada = 2))

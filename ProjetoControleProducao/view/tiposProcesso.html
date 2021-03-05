@@ -12,62 +12,78 @@
 		<div id="menu"></div>
 		<main class="container-fluid p-3 text-white">
 			<section class="rounded p-3 m-2">
-				<form action="#" id="formTipoProcesso">
-					<div class="row">
-						<div class="col-sm-1"></div>
-						<div class="col-sm-10"><h3>Informações sobre o Tipo de Processo:</h3></div>
-						<div class="col-sm-1"></div>
-					</div>
-					<div class="row">
-						<div class="col-sm-1"></div>
-						<div class="col-sm-10">
-							<div class="form-group">
-								<label for="nome">Nome:</label>
-								<input type="text" class="form-control" placeholder="Informe o nome do tipo de processo" id="nome" required maxlength="50">
-							</div>
-						</div>
-						<div class="col-sm-1"></div>
-					</div>
-					<div class="row">
-						<div class="col-sm-1"></div>
-						<div class="col-sm-10">
-							<div class="form-group">
-								<label for="descricao">Descrição:</label>
-								<textarea class="form-control" placeholder="Informe uma descrição para o tipo de processo" id="descricao" required maxlength="250" cols="50" rows="4"></textarea>
-							</div>
-						</div>
-						<div class="col-sm-1"></div>
-					</div>
-					<div class="row">
-						<div class="col-sm-1"></div>
-						<div class="col-sm-10">
-							<button type="button" id="salvar" class="btn btn-dark mt-3 form-group mb-1">Salvar</button>
-							<button type="button" id="cancelar" class="btn btn-dark mt-3 form-group mb-1">Cancelar</button>
-						</div>
-						<div class="col-sm-1"></div>
-					</div>
-				</form>
-			</section>
-			<section class="row rounded p-3 m-2">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-10">
-					<h2>Lista de Tipos de Processos:</h2>
-					<form id="formListaTipoProcesso">
-						<div class="table-responsive">
-							<table class="table table-hover" >
-								<thead class="thead-dark">
-									<tr>
-										<th>Nome</th>
-										<th>Descrição</th>
-									</tr>
-								</thead>
-								<tbody id="listaTiposProcesso"></tbody>
-							</table>
-						</div>
-					</form>
-				</div>
-				<div class="col-sm-1"></div>
-			</section>
+                <form action="#" id="formTipoProcesso">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10"><h3>Informações sobre os Tipos de Processo:</h3></div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Informe o id do tipo de processo" id="pesquisa" maxlength="50">
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <button type="button" id="pesquisar" class="botao btn btn-dark mt-3 form-group mb-1">Pesquisar</button>
+                            <button type="button" id="adicionar" class="botao btn btn-dark mt-3 form-group mb-1" data-toggle='modal' data-target='#tipoModal'>Novo Tipo de Processo</button>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                </form>
+            </section>
+            <section class="row rounded p-3 m-2">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10">
+                    <h2>Lista de Tipos de Processo:</h2>
+                    <form id="formListaTipos">
+                        <div class="table-responsive">
+                            <table class="table table-hover" >
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Descrição</th>
+                                        <th>Operações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaTipos"></tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="modal fade" id="tipoModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="titulo">Novo Tipo de Processo:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="nomeTipo" class="col-form-label">Nome:</label>
+                                            <input type="text" class="form-control" id="nomeTipo" maxlength="50">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="descricaoTipo" class="col-form-label">Descrição:</label>
+                                            <textarea class="form-control" id="descricaoTipo" maxlength="250" cols="50" rows="5"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelar">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1"></div>
+            </section>
 		</main>
 		<div id="rodape"></div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
