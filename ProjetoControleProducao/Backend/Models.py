@@ -127,11 +127,11 @@ class Material(db.Model):
 # ************************* Modelo da classe MateriaPrima ***************************************
 class MateriaPrima(Material):
     # ************************ Atributos da Classe MateriaPrima *********************************
-    id = db.Column(db.Integer, db.ForeignKey('material.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey(Material.id), primary_key=True)
     __mapper_args__ = { 
-        'polymorphic_identity':'materia_prima', 
+        'polymorphic_identity':'materia_prima' 
     }
-    fornecedor = db.Column(db.String(250), nullable=False)
+    fornecedor = db.Column(db.String(50), nullable=False)
     # *******************************************************************************************
 
     # *********************** toString da classe MateriaPrima ***********************************
@@ -158,23 +158,32 @@ class MateriaPrima(Material):
 # ************************* Modelo da classe Produto ********************************************
 class Produto(Material):
     # ************************ Atributos da Classe Produto **************************************
-    id = db.Column(db.Integer, db.ForeignKey('material.id'), primary_key=True)
+    id = db.Column(db.Integer, db.ForeignKey(Material.id), primary_key=True)
     __mapper_args__ = { 
-        'polymorphic_identity':'produto', 
+        'polymorphic_identity':'produto'
     }
     valorVenda = db.Column(db.Float, nullable=False)
     # *******************************************************************************************
 
-    # ****************** Método calcularValorProducao da classe Produto **************************
+    # ********************* Lista de processos de cada Producao *********************************
+    producoes = db.relationship("Producao", primaryjoin="Produto.id==Producao.produto_id")
+    # *******************************************************************************************
+
+    # ****************** Método calcularValorProducao da classe Produto *************************
     def calcular_valor_producao(self):
-        # Realiza cálculo
-        self.valorUnitario = 50
+        custos = 0
+        count = 0
+        for p in self.producoes:
+            if p.finalizada:
+                custos += p.calcular_custo_total() / p.quantidadeProduzida
+                count += 1
+        if count > 0:
+            self.valorUnitario = custos / count
     # *******************************************************************************************
 
     # ****************** Método calculaValorProducao da classe Produto **************************
-    def calcular_valor_venda(self):
-        # Realiza cálculo
-        self.valorVenda = 80
+    def calcular_valor_venda(self, valorAdicional):
+        self.valorVenda = self.valorUnitario + valorAdicional
     # *******************************************************************************************
 
     # *********************** toString da classe Produto ****************************************
@@ -198,7 +207,7 @@ class Produto(Material):
     # *******************************************************************************************
 # ***********************************************************************************************
 
-# ************************* Modelo da classe Producao ******************************************
+# ************************* Modelo da classe Producao *******************************************
 class Producao(db.Model):
     # ************************ Atributos da Classe Producao *************************************
     id = db.Column(db.Integer, primary_key=True)
@@ -211,6 +220,12 @@ class Producao(db.Model):
     # ********************* Lista de processos de cada Producao *********************************
     processos = db.relationship("Processo", primaryjoin="Producao.id==Processo.producao_id")
     # *******************************************************************************************
+
+    # **************** Método finalizarProducao da Classe Producao ******************************
+    def finalizar_producao(self):
+        self.produto.quantidadeEstoque += self.quantidadeProduzida
+        self.finalizada = True
+    # *******************************************************************************************    
 
     # **************** Método calcularTempoTotal da Classe Producao *****************************
     def calcular_tempo_total(self):
@@ -255,13 +270,13 @@ class Producao(db.Model):
             "produto": self.produto.json(),
             "quantidadeProduzida": self.quantidadeProduzida,
             "finalizada": self.finalizada,
-            "tempoTotal": self.calcular_tempo_total(),
+            "tempoTotal": str(self.calcular_tempo_total()),
             "custoTotal": self.calcular_custo_total()
         }
     # *******************************************************************************************
 # ***********************************************************************************************
 
-# ************************* Modelo da classe Processo ******************************************
+# ************************* Modelo da classe Processo *******************************************
 class Processo(db.Model):
     # ************************ Atributos da Classe Processo *************************************
     id = db.Column(db.Integer, primary_key=True)
@@ -284,6 +299,8 @@ class Processo(db.Model):
     def finalizar_processo(self, aprovado):
         self.horaFinal = datetime.utcnow()
         self.aprovado = aprovado
+        for m in self.materiais:
+            m.material.atualizar_estoque(m.quantidadeUsada, False)
     # *******************************************************************************************
 
     # **************** Método calcularTempoTotal da Classe Processo *****************************
@@ -333,7 +350,7 @@ class Processo(db.Model):
             "horaInicial": str(self.horaInicial),
             "horaFinal": str(self.horaFinal),
             "aprovado": self.aprovado,
-            "tempoTotal": self.calcular_tempo_total(),
+            "tempoTotal": str(self.calcular_tempo_total()),
             "custoTotal": self.calcular_custo_total()
         }
     # *******************************************************************************************
@@ -343,7 +360,7 @@ class Processo(db.Model):
 class MaterialUsado(db.Model):
     # ************************ Atributos da Classe MaterialUsado ********************************
     id = db.Column(db.Integer, primary_key=True)
-    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id), nullable=False)
+    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id, ondelete="CASCADE"), nullable=False)
     processo = db.relationship("Processo")
     material_id = db.Column(db.Integer, db.ForeignKey(Material.id), nullable=False)
     material = db.relationship("Material")
@@ -379,7 +396,7 @@ class MaterialUsado(db.Model):
 class FuncionarioNoProcesso(db.Model):
     # ***************** Atributos da Classe FuncionarioNoProcesso *******************************
     id = db.Column(db.Integer, primary_key=True)
-    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id), nullable=False)
+    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id, ondelete="CASCADE"), nullable=False)
     processo = db.relationship("Processo")
     funcionario_id = db.Column(db.Integer, db.ForeignKey(Funcionario.id), nullable=False)
     funcionario = db.relationship("Funcionario")
@@ -411,78 +428,74 @@ class FuncionarioNoProcesso(db.Model):
 # ****************************** Teste das Classes **********************************************
 if __name__ == "__main__":
 
-    # apaga o banco para não repetir os dados
     if os.path.exists(arquivobd):
         os.remove(arquivobd)
 
-    # cria as tabelas
     db.create_all()
 
-    # testa as classes
     cargos = []
+    tipos = []
+    funcionarios = []
+    materias = []
+    produtos = []
+    producoes = []
+    processos = []
+    materiaisUsados = []
+    funcionariosProcessos = []
+
     cargos.append(Cargo(nome = "Operador de Máquina"))
     cargos.append(Cargo(nome = "Auxiliar de Operador"))
     cargos.append(Cargo(nome = "Supervisor de Produção"))
+    for c in cargos:
+        db.session.add(c)
 
-    tipos = []
     tipos.append(TipoProcesso(nome = "Seleção Manual de Chanfro", descricao = "Verificação manual do chanfro das peças."))
     tipos.append(TipoProcesso(nome = "Limpeza de Barra", descricao = "Remoção de impurezas na barra utilizando óleo."))
     tipos.append(TipoProcesso(nome = "Torneamento de Chanfro", descricao = "Criação de chanfro nas peças utilizando o torno."))
+    for t in tipos:
+        db.session.add(t)
 
-    funcionarios = []
     funcionarios.append(Funcionario(nome = "Thiago", cargo = cargos[0]))
     funcionarios.append(Funcionario(nome = "Alexandre", cargo = cargos[1]))
     funcionarios.append(Funcionario(nome = "Hylson", cargo = cargos[2]))
+    for f in funcionarios:
+        db.session.add(f)
 
-    materias = []
     materias.append(MateriaPrima(nome="Barra de Alumínio", descricao = "", quantidadeEstoque = 0, valorUnitario = 100, fornecedor = "Fornecedor1"))
     materias.append(MateriaPrima(nome="Óleo", descricao = "", quantidadeEstoque = 0, valorUnitario = 10, fornecedor = "Fornecedor2"))
     materias.append(MateriaPrima(nome="Vaselina", descricao = "", quantidadeEstoque = 0, valorUnitario = 5, fornecedor = "Fornecedor3"))
     materias[0].atualizar_estoque(10, True)
     materias[1].atualizar_estoque(1000, True)
     materias[2].atualizar_estoque(1, True)
-
-    produtos = []
+    for m in materias:
+        db.session.add(m)
+    
     produtos.append(Produto(nome = "Peça 1", descricao = "Teste Peça 1", quantidadeEstoque = 0, valorUnitario = 0, valorVenda = 0))
     produtos.append(Produto(nome = "Peça 2", descricao = "Teste Peça 2", quantidadeEstoque = 0, valorUnitario = 0, valorVenda = 0))
-    produtos[0].calcular_valor_venda()
-    produtos[0].calcular_valor_producao()
-    produtos[1].calcular_valor_venda()
-    produtos[1].calcular_valor_producao()
+    for p in produtos:
+        db.session.add(p)
 
-    producoes = []
     producoes.append(Producao(produto = produtos[0], quantidadeProduzida = 1000, finalizada = False))
-    producoes.append(Producao(produto = produtos[1], quantidadeProduzida = 2000, finalizada = True))
-    produtos[1].atualizar_estoque(2000, True)
+    producoes.append(Producao(produto = produtos[1], quantidadeProduzida = 2000, finalizada = False))
+    for p in producoes:
+        db.session.add(p)
 
-    processos = []
     processos.append(Processo(tipo = tipos[2], producao = producoes[0], supervisor = funcionarios[0], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
     processos.append(Processo(tipo = tipos[1], producao = producoes[0], supervisor = funcionarios[0], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
     processos.append(Processo(tipo = tipos[1], producao = producoes[0], supervisor = funcionarios[1], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
     processos.append(Processo(tipo = tipos[2], producao = producoes[1], supervisor = funcionarios[2], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
     processos.append(Processo(tipo = tipos[1], producao = producoes[1], supervisor = funcionarios[2], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
     processos.append(Processo(tipo = tipos[0], producao = producoes[1], supervisor = funcionarios[1], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
-    processos.append(Processo(tipo = tipos[0], producao = producoes[1], supervisor = funcionarios[1], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
-    processos[0].finalizar_processo(True)
-    processos[1].finalizar_processo(True)
-    processos[3].finalizar_processo(True)
-    processos[4].finalizar_processo(True)
-    processos[5].finalizar_processo(False)
-    processos[6].finalizar_processo(True)
-
-    materiaisUsados = []
+    for p in processos:
+        db.session.add(p)
+    
     materiaisUsados.append(MaterialUsado(processo = processos[0], material = materias[0], quantidadeUsada = 2))
-    materias[0].atualizar_estoque(2, False)
     materiaisUsados.append(MaterialUsado(processo = processos[1], material = materias[1], quantidadeUsada = 50))
-    materias[1].atualizar_estoque(50, False)
     materiaisUsados.append(MaterialUsado(processo = processos[3], material = materias[0], quantidadeUsada = 4))
-    materias[0].atualizar_estoque(4, False)
     materiaisUsados.append(MaterialUsado(processo = processos[4], material = materias[1], quantidadeUsada = 100))
-    materias[1].atualizar_estoque(100, False)
-    materiaisUsados.append(MaterialUsado(processo = processos[6], material = materias[2], quantidadeUsada = 1))
-    materias[2].atualizar_estoque(1, False)
+    for m in materiaisUsados:
+        db.session.add(m)
 
-    funcionariosProcessos = []
     funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[0], funcionario = funcionarios[0]))
     funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[1], funcionario = funcionarios[0]))
     funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[2], funcionario = funcionarios[0]))
@@ -490,28 +503,48 @@ if __name__ == "__main__":
     funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[3], funcionario = funcionarios[2]))
     funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[4], funcionario = funcionarios[1]))
     funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[5], funcionario = funcionarios[0]))
-    funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[6], funcionario = funcionarios[0]))
-    funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[6], funcionario = funcionarios[1]))
-    
-    # persiste os objetos das classes
-    for c in cargos:
-        db.session.add(c)
-    for t in tipos:
-        db.session.add(t)
-    for f in funcionarios:
-        db.session.add(f)
-    for m in materias:
-        db.session.add(m)
-    for p in produtos:
-        db.session.add(p)
-    for p in producoes:
-        db.session.add(p)
-    for p in processos:
-        db.session.add(p)
-    for m in materiaisUsados:
-        db.session.add(m)
     for f in funcionariosProcessos:
         db.session.add(f)
+
+    db.session.commit()
+
+    processos[0].finalizar_processo(True)
+    processos[1].finalizar_processo(True)
+    processos[3].finalizar_processo(True)
+    processos[4].finalizar_processo(True)
+    processos[5].finalizar_processo(False)
+    processos.append(Processo(tipo = tipos[0], producao = producoes[1], supervisor = funcionarios[1], horaInicial = datetime.utcnow(), horaFinal = None, aprovado = False))
+    for p in processos:
+        db.session.add(p)
+
+    materiaisUsados.append(MaterialUsado(processo = processos[6], material = materias[2], quantidadeUsada = 1))
+    for m in materiaisUsados:
+        db.session.add(m)
+
+    funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[6], funcionario = funcionarios[0]))
+    funcionariosProcessos.append(FuncionarioNoProcesso(processo = processos[6], funcionario = funcionarios[1]))
+    for f in funcionariosProcessos:
+        db.session.add(f)
+
+    db.session.commit()
+    
+    processos[6].finalizar_processo(True)
+    for p in processos:
+        db.session.add(p)
+
+    producoes[1].finalizar_producao()
+    for p in producoes:
+        db.session.add(p)
+
+    db.session.commit()
+
+    produtos[0].calcular_valor_producao()
+    produtos[0].calcular_valor_venda(10)
+    produtos[1].calcular_valor_producao()
+    produtos[1].calcular_valor_venda(10)
+    for p in produtos:
+        db.session.add(p)
+    
     db.session.commit()
     
     # exibe os objetos das classes
