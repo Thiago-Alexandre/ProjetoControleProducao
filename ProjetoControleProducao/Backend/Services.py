@@ -120,6 +120,19 @@ def listarFuncionariosProcesso(processo_id):
     return resposta
 # *****************************************************************************************************
 
+# ************************************* Rota para listar todos os Materiais **********************
+@app.route("/materiais")
+def listarMateriais():
+    try:
+        materiais = db.session.query(Material).all()
+    except:
+        materiais = []
+    materiais_em_json = [ m.json() for m in materiais ]
+    resposta = jsonify(materiais_em_json)
+    resposta.headers.add("Access-Control-Allow-Origin", "*")
+    return resposta
+# *****************************************************************************************************
+
 # ************************************* Rota para pesquisar um Cargo **********************************
 @app.route("/cargos/<int:cargo_id>")
 def pesquisarCargo(cargo_id):
@@ -186,7 +199,7 @@ def pesquisarProduto(produto_id):
 # *****************************************************************************************************
 
 # ************************************* Rota para pesquisar uma Producao ******************************
-@app.route("/producao/<int:producao_id>")
+@app.route("/producoes/<int:producao_id>")
 def pesquisarProducao(producao_id):
     try:
         producoes = db.session.query(Producao).filter(Producao.id == producao_id).all()
@@ -299,7 +312,7 @@ def incluirMateria():
                 nova = MateriaPrima(nome = dados.get("nome"),
                                     descricao = dados.get("descricao"),
                                     quantidadeEstoque = 0,
-                                    valorUnitario = dados.get("valorUnitario"),
+                                    valorUnitario = float(dados.get("valorUnitario")),
                                     fornecedor = dados.get("fornecedor"))
                 db.session.add(nova)
                 db.session.commit()
@@ -371,7 +384,7 @@ def incluirProcesso():
     try:
         tipoProcesso = db.session.query(TipoProcesso).filter(TipoProcesso.id == dados.get("tipo_id")).first()
         producaoProcesso = db.session.query(Producao).filter(Producao.id == dados.get("producao_id")).first()
-        supervisorProcesso = db.session.query(Funcionario).filter(Funcionario.id == dados.get("funcionario_id")).first()
+        supervisorProcesso = db.session.query(Funcionario).filter(Funcionario.id == dados.get("supervisor_id")).first()
         if tipoProcesso == None:
             resposta = jsonify({"resultado": "erro", "detalhes": "Nenhum tipo de processo encontrado!"})
         elif producaoProcesso == None:
@@ -409,9 +422,12 @@ def incluirMaterialProcesso():
             resposta = jsonify({"resultado": "erro", "detalhes": "Informações inválidas!"})
         else:
             novo = MaterialUsado(processo = processoReferente,
-                                 material = materias[0],
-                                 quantidadeUsada = dados.get("quantidadeUsada"))
+                                 material = materialUsado,
+                                 quantidadeUsada = float(dados.get("quantidadeUsada")))
             db.session.add(novo)
+            db.session.commit()
+            materialUsado.atualizar_estoque(float(dados.get("quantidadeUsada")), False)
+            db.session.add(materialUsado)
             db.session.commit()
     except Exception as e: 
         resposta = jsonify({"resultado":"erro", "detalhes":str(e)})
@@ -432,10 +448,17 @@ def incluirFuncionarioProcesso():
         elif funcionarioReferente == None:
             resposta = jsonify({"resultado": "erro", "detalhes": "Nenhum funcionário encontrado!"})
         else:
-            novo = FuncionarioNoProcesso(processo = processoReferente,
-                                         funcionario = funcionarioReferente)
-            db.session.add(novo)
-            db.session.commit()
+            funcionariosProcesso = FuncionarioNoProcesso.query.join(Processo, Processo.id == FuncionarioNoProcesso.processo_id
+                                                                    ).filter(FuncionarioNoProcesso.processo_id == processoReferente.id)
+            funcionarioProcesso = funcionariosProcesso.join(Funcionario, Funcionario.id == FuncionarioNoProcesso.funcionario_id
+                                                                    ).filter(FuncionarioNoProcesso.funcionario_id == funcionarioReferente.id).first()
+            if funcionarioProcesso == None:
+                novo = FuncionarioNoProcesso(processo = processoReferente,
+                                            funcionario = funcionarioReferente)
+                db.session.add(novo)
+                db.session.commit()
+            else:
+                resposta = jsonify({"resultado": "erro", "detalhes": "Funcionário já está no processo!"})
     except Exception as e: 
         resposta = jsonify({"resultado":"erro", "detalhes":str(e)})
     resposta.headers.add("Access-Control-Allow-Origin", "*") 
@@ -547,11 +570,11 @@ def excluirProducao(producao_id):
         producao = Producao.query.filter(Producao.id == producao_id)
         producoesProcesso = Processo.query.join(Producao, Producao.id == Processo.producao_id)
         producoesProcesso = producoesProcesso.filter(Processo.producao_id == producao_id).all()
-        if not producoesProcesso and not producao.finalizada:
+        if not producoesProcesso and not producao.first().finalizada:
             producao.delete()
             db.session.commit()
         else:
-            resposta = jsonify({"resultado":"erro", "detalhes":"Produção em uso ou já finalizada!"})
+            resposta = jsonify({"resultado":"erro", "detalhes":"Produção em andamento ou já finalizada!"})
     except Exception as e:
         resposta = jsonify({"resultado":"erro", "detalhes":str(e)})
     resposta.headers.add("Access-Control-Allow-Origin", "*")
@@ -564,8 +587,13 @@ def excluirProcesso(processo_id):
     resposta = jsonify({"resultado": "ok", "detalhes": "ok"})
     try:
         processo = Processo.query.filter(Processo.id == processo_id)
-        processo.delete()
-        db.session.commit()
+        materiaisProcesso = MaterialUsado.query.join(Processo, Processo.id == MaterialUsado.processo_id)
+        materiaisProcesso = materiaisProcesso.filter(MaterialUsado.processo_id == processo_id).all()
+        if not materiaisProcesso:
+            processo.delete()
+            db.session.commit()
+        else:
+            resposta = jsonify({"resultado":"erro", "detalhes":"Não é possível excluir este processo por ele já ter alterado o estoque!"})
     except Exception as e:
         resposta = jsonify({"resultado":"erro", "detalhes":str(e)})
     resposta.headers.add("Access-Control-Allow-Origin", "*")
@@ -579,6 +607,9 @@ def excluirMaterialProcesso(material_usado_id):
     try:
         materialUsado = MaterialUsado.query.filter(MaterialUsado.id == material_usado_id)
         materialUsado.delete()
+        db.session.commit()
+        materialUsado.material.atualizarEstoque(materialUsado.quantidadeUsada, True)
+        db.session.add(materialUsado.material)
         db.session.commit()
     except Exception as e:
         resposta = jsonify({"resultado":"erro", "detalhes":str(e)})
@@ -608,7 +639,7 @@ def editarCargo(cargo_id):
     if Validacao.validarTexto(dados.get("nome"), 50):
         try:
             cargos = db.session.query(Cargo).filter(Cargo.nome == dados.get("nome")).all()
-            if not cargos:
+            if not cargos or cargos[0].id == cargo_id:
                 cargo = Cargo.query.filter(Cargo.id == cargo_id).first()
                 cargo.nome = dados.get("nome")
                 db.session.add(cargo)
@@ -635,7 +666,7 @@ def editarTipo(tipo_id):
     else:
         try:
             tipos = db.session.query(TipoProcesso).filter(TipoProcesso.nome == dados.get("nome")).all()
-            if not tipos:
+            if not tipos or tipos[0].id == tipo_id:
                 tipo = TipoProcesso.query.filter(TipoProcesso.id == tipo_id).first()
                 tipo.nome = dados.get("nome")
                 tipo.descricao = dados.get("descricao")
@@ -689,7 +720,7 @@ def editarMateria(materia_id):
     else:
         try:
             materias = db.session.query(MateriaPrima).filter(MateriaPrima.nome == dados.get("nome")).all()
-            if not materias:
+            if not materias or materias[0].id == materia_id:
                 materia = MateriaPrima.query.filter(MateriaPrima.id == materia_id).first()
                 materia.nome = dados.get("nome")
                 materia.descricao = dados.get("descricao")
@@ -717,7 +748,7 @@ def editarProduto(produto_id):
     else:
         try:
             produtos = db.session.query(Produto).filter(Produto.nome == dados.get("nome")).all()
-            if not produtos:
+            if not produtos or produtos[0].id == produto_id:
                 produto = Produto.query.filter(Produto.id == produto_id).first()
                 produto.nome = dados.get("nome")
                 produto.descricao = dados.get("descricao")
@@ -731,9 +762,9 @@ def editarProduto(produto_id):
     return resposta
 # *****************************************************************************************************
 
-# ************************************* Rota para atualizar Estoque ***********************************
+# ************************************* Rota para adicionar Estoque ***********************************
 @app.route("/materiais/<int:material_id>", methods=["POST"])
-def atualizarEstoque(material_id):
+def adicionarEstoque(material_id):
     resposta = jsonify({"resultado": "ok", "detalhes": "ok"})
     dados = request.get_json()
     if not Validacao.validarValor(dados.get("quantidade")):
@@ -744,7 +775,7 @@ def atualizarEstoque(material_id):
             if material == None:
                 resposta = jsonify({"resultado": "erro", "detalhes": "Nenhum material encontrado!"})
             else:
-                material.atualizar_estoque(dados.get("quantidade"), dados.get("entrada"))
+                material.atualizar_estoque(float(dados.get("quantidade")), True)
                 db.session.add(material)
                 db.session.commit()
         except Exception as e: 
@@ -784,6 +815,8 @@ def finalizarProducao(producao_id):
             producao.finalizar_producao()
             db.session.add(producao)
             db.session.commit()
+            print(producao.produto)
+            print(producao.produto_id)
             producao.produto.calcular_valor_producao()
             producao.produto.calcular_valor_venda(10)
             db.session.add(producao.produto)

@@ -12,10 +12,10 @@
 	    <div id="menu"></div>
 		<main class="container-fluid p-3 text-white">
 			<section class="rounded p-3 m-2">
-                <form action="#" id="formMaterias">
+                <form action="#" id="formMateria">
                     <div class="row">
                         <div class="col-sm-1"></div>
-                        <div class="col-sm-10"><h3>Informações sobre as Matérias-Prima:</h3></div>
+                        <div class="col-sm-10"><h3>Informações sobre as Matérias-Primas:</h3></div>
                         <div class="col-sm-1"></div>
                     </div>
                     <div class="row">
@@ -34,18 +34,103 @@
                         <div class="col-sm-1"></div>
                     </div>
                 </form>
+                <div class="modal fade" id="materiaModal" tabindex="-1" role="dialog" aria-labelledby="tituloMateria" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloMateria">Matéria-Prima:</h5>
+                                <button type="button" class="close" id="fecharModalMateria" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="idMateria" class="col-form-label">ID:</label>
+                                        <input type="text" class="form-control" id="idMateria" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nomeMateria" class="col-form-label">Nome:</label>
+                                        <input type="text" class="form-control" id="nomeMateria" maxlength="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="descricaoMateria" class="col-form-label">Descrição:</label>
+                                        <textarea class="form-control" id="descricaoMateria" maxlength="250" cols="50" rows="5"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="estoqueMateria" class="col-form-label">Estoque:</label>
+                                        <input type="text" class="form-control" id="estoqueMateria" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="valorMateria" class="col-form-label">Valor Unitário:</label>
+                                        <input type="text" class="form-control" id="valorMateria" maxlength="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fornecedorMateria" class="col-form-label">Fornecedor:</label>
+                                        <input type="text" class="form-control" id="fornecedorMateria" maxlength="50">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelarMateria">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvarMateria">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="addEstoqueModal" tabindex="-1" role="dialog" aria-labelledby="tituloEstoque" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="tituloEstoque">Adicionar Estoque:</h5>
+                                    <button type="button" class="close" id="fecharModalEstoque" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="idEstoque" class="col-form-label">ID:</label>
+                                            <input type="text" class="form-control" id="idEstoque" maxlength="50" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nomeEstoque" class="col-form-label">Nome:</label>
+                                            <input type="text" class="form-control" id="nomeEstoque" maxlength="50" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="estoqueAtual" class="col-form-label">Estoque Atual:</label>
+                                            <input type="text" class="form-control" id="estoqueAtual" maxlength="50" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fornecedorEstoque" class="col-form-label">Fornecedor:</label>
+                                            <input type="text" class="form-control" id="fornecedorEstoque" maxlength="50" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="quantidadeAdicionada" class="col-form-label">Quantidade Adicionada:</label>
+                                            <input type="text" class="form-control" id="quantidadeAdicionada" maxlength="50">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" id="cancelarEstoque">Cancelar</button>
+                                    <button type="button" class="btn btn-primary" id="salvarEstoque">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </section>
             <section class="row rounded p-3 m-2">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10">
-                    <h2>Lista de Matérias-Prima:</h2>
-                    <form id="formListaMaterias">
+                    <h2>Lista de Matérias-Primas:</h2>
+                    <form id="formListaMateria">
                         <div class="table-responsive">
                             <table class="table table-hover" >
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Nome</th>
-                                        <th>Descrição</th>
+                                        <th>Fornecedor</th>
+                                        <th>Estoque</th>
                                         <th>Operações</th>
                                     </tr>
                                 </thead>
@@ -53,34 +138,6 @@
                             </table>
                         </div>
                     </form>
-                    <div class="modal fade" id="materiaModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="titulo">Nova Matéria-Prima:</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="nomeTipo" class="col-form-label">Nome:</label>
-                                            <input type="text" class="form-control" id="nomeTipo" maxlength="50">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="descricaoTipo" class="col-form-label">Descrição:</label>
-                                            <textarea class="form-control" id="descricaoTipo" maxlength="250" cols="50" rows="5"></textarea>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelar">Cancelar</button>
-                                    <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-sm-1"></div>
             </section>
@@ -90,5 +147,6 @@
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   		<script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/materia.js"></script>
 	</body>
 </html>

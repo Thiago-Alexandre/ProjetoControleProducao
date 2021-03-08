@@ -12,73 +12,298 @@
 	    <div id="menu"></div>
 		<main class="container-fluid p-3 text-white">
 			<section class="rounded p-3 m-2">
-  				<form action="#" id="formFiltro">
-  					<div class="row">
-  						<div class="col-sm-1"></div>
-  						<div class="col-sm-10"><h3>Filtros:</h3></div>
-  						<div class="col-sm-1"></div>
-  					</div>
-  					<div class="row">
-  						<div class="col-sm-1"></div>
-  						<div class="col-sm-5 mb-2">
-							<label>Estado da Produção:</label>
-							<br>
-	      					<div class="form-check-inline">
-						      	<label class="form-check-label" for="radio1">
-						        	<input type="radio" class="form-check-input" id="radio1" name="optradio" value="producao">Em Produção
-						      	</label>
-						    </div>
-						    <div class="form-check-inline">
-						      	<label class="form-check-label" for="radio2">
-						        	<input type="radio" class="form-check-input" id="radio2" name="optradio" value="finalizada">Finalizada
-						      	</label>
-						    </div>
-  						</div>
-  						<div class="col-sm-5">
-							<label for="filtroPorProduto">Por Produto:</label>
-						    <select class="form-control mb-2 mr-sm-2" id="filtroPorProduto" name="filtroProdutos"></select>
-  						</div>
-  						<div class="col-sm-1"></div>
-  					</div>
-  					<div class="row">
-  						<div class="col-sm-1"></div>
-  						<div class="col-sm-10">
-  							<button type="button" class="btn btn-dark mt-3 form-group mb-1">Pesquisar</button>
-  						</div>
-  						<div class="col-sm-1"></div>
-  					</div>
-				</form>
-      		</section>
-      		<section class="row rounded p-3 m-2">
-	   			<div class="col-sm-1"></div>
-				<div class="col-sm-10">
-      				<h2>Lista de Produções:</h2>
-      				<form id="formListaProducao">
-      					<div class="table-responsive">
-						    <table class="table table-hover" >
-						     	<thead class="thead-dark">
-							        <tr>
-								        <th>Código</th>
-								        <th>Produto</th>
-								        <th>Quantidade</th>
-								        <th>Estado</th>
-								        <th>Custo Total</th>
-								        <th>Tempo Total</th>
-							        </tr>
-						      	</thead>
-						      	<tbody id="listaProducao"></tbody>
-						    </table>
-						</div>
-      				</form>
-      			</div>
-      			<div class="col-sm-1"></div>
-      		</section>
+                <form action="#" id="formProducao">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10"><h3>Informações sobre as Produções:</h3></div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="Informe o id da produção" id="pesquisa" maxlength="50">
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <button type="button" id="pesquisar" class="botao btn btn-dark mt-3 form-group mb-1">Pesquisar</button>
+                            <button type="button" id="novaProducao" class="botao btn btn-dark mt-3 form-group mb-1" data-toggle='modal' data-target='#producaoModal'>Nova Produção</button>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                </form>
+                <div class="modal fade" id="producaoModal" tabindex="-1" role="dialog" aria-labelledby="tituloProducao" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloProducao">Nova Produção:</h5>
+                                <button type="button" class="close" id="fecharModalProducao" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                	<div class="form-group">
+										<label for="produtoId">Produto:</label> 
+										<select class="form-control" id="produtoId" aria-describedby="produtoIdHelp" placeholder="Produto"></select>
+										<small id="produtoIdHelp" class="form-text text-muted">Selecione o produto que será produzido.</small> 
+									</div>
+                                    <div class="form-group">
+                                        <label for="quantidadeProduzida" class="col-form-label">Quantidade Produzida:</label>
+                                        <input type="text" class="form-control" id="quantidadeProduzida" maxlength="50">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelarProducao">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvarProducao">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="processosModal" tabindex="-1" role="dialog" aria-labelledby="tituloProcessos" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloProcessos">Lista de Processos da Produção:</h5>
+                                <button type="button" class="close" id="fecharModalProcessos" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+			                    <form id="formListaProcesso">
+			                        <div class="table-responsive">
+			                            <table class="table table-hover" >
+			                                <thead class="thead-dark">
+			                                    <tr>
+			                                        <th>Tipo de Processo</th>
+			                                        <th>Supervisor</th>
+			                                        <th>Hora Inicial</th>
+			                                        <th>Hora Final</th>
+			                                        <th>Aprovado</th>
+			                                        <th>Tempo Total</th>
+			                                        <th>Custo Total</th>
+			                                        <th>Operações</th>
+			                                    </tr>
+			                                </thead>
+			                                <tbody id="listaProcessos"></tbody>
+			                            </table>
+			                        </div>
+			                    </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="okProcessos">Ok</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="novoProcessoModal" tabindex="-1" role="dialog" aria-labelledby="tituloNovoProcesso" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloNovoProcesso">Novo Processo:</h5>
+                                <button type="button" class="close" id="fecharModalProcesso" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                	<div class="form-group">
+                                        <label for="idProducao" class="col-form-label">ID da Produção:</label>
+                                        <input type="text" class="form-control" id="idProducao" maxlength="50" readonly>
+                                    </div>
+                                	<div class="form-group">
+										<label for="tipoId">Tipo de Processo:</label> 
+										<select class="form-control" id="tipoId" aria-describedby="tipoIdHelp" placeholder="Tipo de Processo"></select>
+										<small id="tipoIdHelp" class="form-text text-muted">Selecione o tipo do processo.</small> 
+									</div>
+                                    <div class="form-group">
+										<label for="supervisorId">Supervisor:</label> 
+										<select class="form-control" id="supervisorId" aria-describedby="supervisorIdHelp" placeholder="Supervisor"></select>
+										<small id="supervisorIdHelp" class="form-text text-muted">Selecione o funcionário supervisor do processo.</small> 
+									</div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelarNovoProcesso">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvarNovoProcesso">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="materiaisModal" tabindex="-1" role="dialog" aria-labelledby="tituloMateriais" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloMateriais">Lista de Materiais do Processo:</h5>
+                                <button type="button" class="close" id="fecharModalMateriais" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="idProcessoMateriais" class="col-form-label">ID do Processo:</label>
+                                        <input type="text" class="form-control" id="idProcessoMateriais" maxlength="50" readonly>
+                                    </div>
+                                </form>
+                                <form id="formListaMateriais">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" >
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Material</th>
+                                                    <th>Quantidade Usada</th>
+                                                    <th>Operações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="listaMateriais"></tbody>
+                                        </table>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="addMaterial">Adicionar Material</button>
+                                <button type="button" class="btn btn-primary" id="okMateriais">Ok</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="novoMaterialModal" tabindex="-1" role="dialog" aria-labelledby="tituloMaterial" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloMaterial">Novo Material Usado no Processo:</h5>
+                                <button type="button" class="close" id="fecharModalMaterial" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="idProcesso" class="col-form-label">ID do Processo:</label>
+                                        <input type="text" class="form-control" id="idProcesso" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="materialId">Material:</label> 
+                                        <select class="form-control" id="materialId" aria-describedby="materialIdHelp" placeholder="Material"></select>
+                                        <small id="materialIdHelp" class="form-text text-muted">Selecione o material que será usado no processo.</small> 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantidadeUsada" class="col-form-label">Quantidade Usada:</label>
+                                        <input type="text" class="form-control" id="quantidadeUsada" maxlength="50">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelarNovoMaterial">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvarNovoMaterial">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="funcionariosModal" tabindex="-1" role="dialog" aria-labelledby="tituloFuncionarios" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloFuncionarios">Lista de Funcionários do Processo:</h5>
+                                <button type="button" class="close" id="fecharModalFuncionarios" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="idProcessoFuncionarios" class="col-form-label">ID do Processo:</label>
+                                        <input type="text" class="form-control" id="idProcessoFuncionarios" maxlength="50" readonly>
+                                    </div>
+                                </form>
+                                <form id="formListaFuncionarios">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" >
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Funcionário</th>
+                                                    <th>Operações</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="listaFuncionarios"></tbody>
+                                        </table>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="addFuncionario">Adicionar Funcionário</button>
+                                <button type="button" class="btn btn-primary" id="okFuncionarios">Ok</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="novoFuncionarioModal" tabindex="-1" role="dialog" aria-labelledby="tituloFuncionario" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloFuncionario">Novo Funcionário do Processo:</h5>
+                                <button type="button" class="close" id="fecharModalFuncionario" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="idProcessoF" class="col-form-label">ID do Processo:</label>
+                                        <input type="text" class="form-control" id="idProcessoF" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="funcionarioId">Funcionário:</label> 
+                                        <select class="form-control" id="funcionarioId" aria-describedby="funcionarioIdHelp" placeholder="Funcionario"></select>
+                                        <small id="funcionarioIdHelp" class="form-text text-muted">Selecione o funcionário que atuará no processo.</small> 
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelarNovoFuncionario">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvarNovoFuncionario">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+			<section class="row rounded p-3 m-2">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10">
+                    <h2>Lista de Produções:</h2>
+                    <form id="formListaProducao">
+                        <div class="table-responsive">
+                            <table class="table table-hover" >
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Produto Produzido</th>
+                                        <th>Quantidade Produzida</th>
+                                        <th>Produção Finalizada</th>
+                                        <th>Tempo Total</th>
+                                        <th>Custo Total</th>
+                                        <th>Operações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listaProducoes"></tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-1"></div>
+            </section>
 	    </main>
 	    <div id="rodape"></div>
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   		<script type="text/javascript" src="js/main.js"></script>
-  		<script type="text/javascript" src="js/index.js"></script>
+  		<script type="text/javascript" src="js/producao.js"></script>
+        <script type="text/javascript" src="js/producaoProcessos.js"></script>
+        <script type="text/javascript" src="js/producaoProcessosFuncionarios.js"></script>
+        <script type="text/javascript" src="js/producaoProcessosMateriais.js"></script>
 	</body>
 </html>

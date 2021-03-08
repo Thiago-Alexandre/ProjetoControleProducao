@@ -12,7 +12,7 @@
 	    <div id="menu"></div>
 		<main class="container-fluid p-3 text-white">
 			<section class="rounded p-3 m-2">
-                <form action="#" id="formProdutos">
+                <form action="#" id="formProduto">
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-10"><h3>Informações sobre os Produtos:</h3></div>
@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Informe o id do Produto" id="pesquisa" maxlength="50">
+                            <input type="text" class="form-control" placeholder="Informe o id do produto" id="pesquisa" maxlength="50">
                         </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -34,18 +34,63 @@
                         <div class="col-sm-1"></div>
                     </div>
                 </form>
+                <div class="modal fade" id="produtoModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="titulo">Produto:</h5>
+                                <button type="button" class="close" id="fechar" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="idProduto" class="col-form-label">ID:</label>
+                                        <input type="text" class="form-control" id="idProduto" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nomeProduto" class="col-form-label">Nome:</label>
+                                        <input type="text" class="form-control" id="nomeProduto" maxlength="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="descricaoProduto" class="col-form-label">Descrição:</label>
+                                        <textarea class="form-control" id="descricaoProduto" maxlength="250" cols="50" rows="5"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantidadeEstoque" class="col-form-label">Estoque:</label>
+                                        <input type="text" class="form-control" id="quantidadeEstoque" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="valorProducao" class="col-form-label">Valor de Produção:</label>
+                                        <input type="text" class="form-control" id="valorProducao" maxlength="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="valorVenda" class="col-form-label">Valor para Venda:</label>
+                                        <input type="text" class="form-control" id="valorVenda" maxlength="50" readonly>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelar">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section class="row rounded p-3 m-2">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10">
                     <h2>Lista de Produtos:</h2>
-                    <form id="formListaProdutos">
+                    <form id="formListaProduto">
                         <div class="table-responsive">
                             <table class="table table-hover" >
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Nome</th>
-                                        <th>Descrição</th>
+                                        <th>Estoque</th>
+                                        <th>Valor de Venda</th>
                                         <th>Operações</th>
                                     </tr>
                                 </thead>
@@ -53,34 +98,6 @@
                             </table>
                         </div>
                     </form>
-                    <div class="modal fade" id="produtoModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="titulo">Novo Produto:</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="nomeTipo" class="col-form-label">Nome:</label>
-                                            <input type="text" class="form-control" id="nomeTipo" maxlength="50">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="descricaoTipo" class="col-form-label">Descrição:</label>
-                                            <textarea class="form-control" id="descricaoTipo" maxlength="250" cols="50" rows="5"></textarea>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelar">Cancelar</button>
-                                    <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-sm-1"></div>
             </section>
@@ -90,5 +107,6 @@
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   		<script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/produto.js"></script>
 	</body>
 </html>

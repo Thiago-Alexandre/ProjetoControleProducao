@@ -34,18 +34,51 @@
                         <div class="col-sm-1"></div>
                     </div>
                 </form>
+                <div class="modal fade" id="funcionarioModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="titulo">Funcionário:</h5>
+                                <button type="button" class="close" id="fechar" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="idFuncionario" class="col-form-label">ID:</label>
+                                        <input type="text" class="form-control" id="idFuncionario" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nomeFuncionario" class="col-form-label">Nome:</label>
+                                        <input type="text" class="form-control" id="nomeFuncionario" maxlength="50">
+                                    </div>
+                                    <div class="form-group"> 
+										<label for="cargoId">Cargo</label> 
+										<select class="form-control" id="cargoId" aria-describedby="cargoIdHelp" placeholder="Cargo"></select>
+										<small id="cargoIdHelp" class="form-text text-muted">Selecione o cargo do funcionário.</small> 
+									</div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelar">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section class="row rounded p-3 m-2">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10">
                     <h2>Lista de Funcionários:</h2>
-                    <form id="formListaFuncionarios">
+                    <form id="formListaFuncionario">
                         <div class="table-responsive">
                             <table class="table table-hover" >
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Nome</th>
-                                        <th>Descrição</th>
+                                        <th>Cargo</th>
                                         <th>Operações</th>
                                     </tr>
                                 </thead>
@@ -53,34 +86,6 @@
                             </table>
                         </div>
                     </form>
-                    <div class="modal fade" id="funcionarioModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="titulo">Novo Funcionário:</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="nomeTipo" class="col-form-label">Nome:</label>
-                                            <input type="text" class="form-control" id="nomeTipo" maxlength="50">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="descricaoTipo" class="col-form-label">Descrição:</label>
-                                            <textarea class="form-control" id="descricaoTipo" maxlength="250" cols="50" rows="5"></textarea>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelar">Cancelar</button>
-                                    <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-sm-1"></div>
             </section>
@@ -90,5 +95,6 @@
   		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   		<script type="text/javascript" src="js/main.js"></script>
+  		<script type="text/javascript" src="js/funcionario.js"></script>
 	</body>
 </html>

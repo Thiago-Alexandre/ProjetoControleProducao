@@ -1,4 +1,4 @@
-from Datetime import datetime
+from datetime import datetime
 
 class Validacao():
     @staticmethod
@@ -14,11 +14,13 @@ class Validacao():
         return True
     
     @staticmethod
-    def validarValor(valor):
-        if valor == None:
+    def validarValor(valorTexto):
+        try:
+            valor = float(valorTexto)
+            if valor == None:
+                return False
+            if valor == 0 or valor < 0:
+                return False
+            return True    
+        except:
             return False
-        if not isinstance(valor , float):
-            return False
-        if valor == 0:
-            return False
-        return True

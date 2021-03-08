@@ -34,6 +34,38 @@
                         <div class="col-sm-1"></div>
                     </div>
                 </form>
+                <div class="modal fade" id="tipoModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="titulo">Novo Tipo de Processo:</h5>
+                                <button type="button" class="close" id="fechar" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                	<div class="form-group">
+                                        <label for="idTipo" class="col-form-label">ID:</label>
+                                        <input type="text" class="form-control" id="idTipo" maxlength="50" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nomeTipo" class="col-form-label">Nome:</label>
+                                        <input type="text" class="form-control" id="nomeTipo" maxlength="50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="descricaoTipo" class="col-form-label">Descrição:</label>
+                                        <textarea class="form-control" id="descricaoTipo" maxlength="250" cols="50" rows="5"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelar">Cancelar</button>
+                                <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section class="row rounded p-3 m-2">
                 <div class="col-sm-1"></div>
@@ -45,7 +77,6 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>Nome</th>
-                                        <th>Descrição</th>
                                         <th>Operações</th>
                                     </tr>
                                 </thead>
@@ -53,34 +84,6 @@
                             </table>
                         </div>
                     </form>
-                    <div class="modal fade" id="tipoModal" tabindex="-1" role="dialog" aria-labelledby="titulo" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="titulo">Novo Tipo de Processo:</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="nomeTipo" class="col-form-label">Nome:</label>
-                                            <input type="text" class="form-control" id="nomeTipo" maxlength="50">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="descricaoTipo" class="col-form-label">Descrição:</label>
-                                            <textarea class="form-control" id="descricaoTipo" maxlength="250" cols="50" rows="5"></textarea>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelar">Cancelar</button>
-                                    <button type="button" class="btn btn-primary" id="salvar">Salvar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-sm-1"></div>
             </section>

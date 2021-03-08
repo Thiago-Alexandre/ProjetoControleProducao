@@ -1,42 +1,20 @@
 $(document).ready(function(){
     
     $(function(){
-        carregar();
-    })
+        carregar("http://localhost:5000/cargos");
+    });
 
     $("#pesquisar").click(function(){
         id_cargo = $("#pesquisa").val();
         $("#pesquisa").val("");
         if (id_cargo === ""){
-            carregar();
+            carregar("http://localhost:5000/cargos");
         } else{
-            mostrar(id_cargo);     
+            carregar("http://localhost:5000/cargos/" + id_cargo);     
         }
     });
 
-    function carregar(){
-        var url = "http://localhost:5000/cargos";
-        $.get(url,function(data,status){
-            if (data.length === 0){
-                $("#listaCargos").html("<tr><td colspan=1>Nenhum Cargo encontrado!</td></tr>");
-            } else{
-                var table = "";
-                for(x in data){
-                    table += "<tr class='linha'>" +
-                             "<td>" + data[x].nome + "</td>" + 
-                             "<td><a href=# id='editar_" + data[x].id + "' class='editar_cargo'>" + 
-                             "<img src='img/editar.ico' alt='Editar Cargo' title='Editar cargo' height='30' width='30'></a>" +
-                             "<a href=# id='excluir_" + data[x].id + "' class='excluir_cargo'>" + 
-                             "<img src='img/excluir.ico' alt='Excluir Cargo' title='Excluir cargo' height='30' width='30'></a>" +
-                             "</td></tr>";
-                }
-                $("#listaCargos").html(table);
-            }
-        });
-    };
-
-    function mostrar(id_cargo){
-        var url = "http://localhost:5000/cargos/" + id_cargo;
+    function carregar(url){
         $.get(url,function(data,status){
             if (data.length === 0){
                 $("#listaCargos").html("<tr><td colspan=1>Nenhum Cargo encontrado!</td></tr>");
@@ -59,46 +37,51 @@ $(document).ready(function(){
     $(document).on("click", "#salvar", function() {
         idCargo = $("#idCargo").val();
         nomeCargo = $("#nomeCargo").val();
-        
-        if(nomeCargo === ""){
-            alert("Nome vazio!");
-        } else{
-            metodo = "PUT";
-            endpoint = "http://localhost:5000/cargos/" + idCargo;
-            if (idCargo === ""){
-                metodo = "POST";
-                endpoint = "http://localhost:5000/cargos";
-            }
-            var dados = JSON.stringify({nome: nomeCargo}); 
-            $.ajax({ 
-                url: endpoint, 
-                type: metodo, 
-                dataType: "json",
-                contentType: "application/json",
-                data: dados, 
-                success: sucessoSalvarCargo,
-                error: erroAoIncluir 
-            });
+        metodo = "PUT";
+        endpoint = "http://localhost:5000/cargos/" + idCargo;
+        if (idCargo === ""){
+            metodo = "POST";
+            endpoint = "http://localhost:5000/cargos";
+        }
+        var dados = JSON.stringify({nome: nomeCargo}); 
+        $.ajax({ 
+            url: endpoint, 
+            type: metodo, 
+            dataType: "json",
+            contentType: "application/json",
+            data: dados, 
+            success: sucessoSalvar,
+            error: erroAoIncluir 
+        });
 
-            function sucessoSalvarCargo (retorno) {
-                if (retorno.resultado == "ok") {
-                    alert("Cargo salvo com sucesso!");
-                    $('#cargoModal').modal('hide');
-                    carregar();
-                } else {
-                    alert(retorno.resultado + ":" + retorno.detalhes);
-                }
-                $("#nomeCargo").val("");
-                $("#idCargo").val("");
-            }
-
-            function erroAoIncluir (retorno) {
-                alert("ERRO: "+retorno.resultado + ":" + retorno.detalhes);
-                $("#nomeCargo").val("");
-                $("#idCargo").val("");
+        function sucessoSalvar (retorno) {
+            if (retorno.resultado == "ok") {
+                alert("Cargo salvo com sucesso!");
+                fecharModal();
+                carregar("http://localhost:5000/cargos");
+            } else {
+                alert(retorno.resultado + ":" + retorno.detalhes);
             }
         }
+
+        function erroAoIncluir (retorno) {
+            alert("ERRO: "+retorno.resultado + ":" + retorno.detalhes);
+        }
     });
+
+    $(document).on("click", "#cancelar", function() {
+        fecharModal();
+    });
+
+    $(document).on("click", "#fechar", function() {
+        fecharModal();
+    });
+
+    function fecharModal(){
+        $("#idCargo").val("");
+        $("#nomeCargo").val("");
+        $('#cargoModal').modal('hide');
+    };
 
     $(document).on("click", ".excluir_cargo", function() { 
         var componente_clicado = $(this).attr('id'); 
@@ -108,21 +91,21 @@ $(document).ready(function(){
             url: "http://localhost:5000/cargos/" + id_cargo, 
             type: "DELETE",
             dataType: "json",
-            success: sucessoExcluirCargo, 
+            success: sucessoExcluir, 
             error: erroAoExcluir 
         });
 
-        function sucessoExcluirCargo (retorno) {
+        function sucessoExcluir (retorno) {
             if (retorno.resultado == "ok") { 
                 alert("Cargo removido com sucesso!");
-                carregar();
+                carregar("http://localhost:5000/cargos");
             } else {
                 alert(retorno.resultado + ":" + retorno.detalhes);
             }
         }
 
         function erroAoExcluir (retorno) { 
-            alert("ERRO: "+retorno.resultado + ":" + retorno.detalhes); 
+            alert("ERRO: " + retorno.resultado + ":" + retorno.detalhes); 
         }
     });
 

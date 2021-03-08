@@ -223,6 +223,7 @@ class Producao(db.Model):
 
     # **************** Método finalizarProducao da Classe Producao ******************************
     def finalizar_producao(self):
+        print(self.produto.quantidadeEstoque)
         self.produto.quantidadeEstoque += self.quantidadeProduzida
         self.finalizada = True
     # *******************************************************************************************    
