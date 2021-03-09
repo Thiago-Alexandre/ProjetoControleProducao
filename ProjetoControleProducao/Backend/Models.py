@@ -361,7 +361,7 @@ class Processo(db.Model):
 class MaterialUsado(db.Model):
     # ************************ Atributos da Classe MaterialUsado ********************************
     id = db.Column(db.Integer, primary_key=True)
-    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id, ondelete="CASCADE"), nullable=False)
+    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id), nullable=False)
     processo = db.relationship("Processo")
     material_id = db.Column(db.Integer, db.ForeignKey(Material.id), nullable=False)
     material = db.relationship("Material")
@@ -397,7 +397,7 @@ class MaterialUsado(db.Model):
 class FuncionarioNoProcesso(db.Model):
     # ***************** Atributos da Classe FuncionarioNoProcesso *******************************
     id = db.Column(db.Integer, primary_key=True)
-    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id, ondelete="CASCADE"), nullable=False)
+    processo_id = db.Column(db.Integer, db.ForeignKey(Processo.id), nullable=False)
     processo = db.relationship("Processo")
     funcionario_id = db.Column(db.Integer, db.ForeignKey(Funcionario.id), nullable=False)
     funcionario = db.relationship("Funcionario")

@@ -87,18 +87,18 @@ RecursoGasto <|.. Producao
 Material <|-- Produto
 Material <|-- MateriaPrima
 
-Producao "produto" o-- Produto
+Producao "produto" *-- Produto
 
-Funcionario "cargo" o-- Cargo
+Funcionario "cargo" *-- Cargo
 
-Processo "supervisor" o-- Funcionario
-Processo "tipo" o-- TipoProcesso
+Processo "supervisor" *-- Funcionario
+Processo "tipo" *-- TipoProcesso
 Processo "producao" *-- Producao
 
-MaterialUsado "material" o-- Material
+MaterialUsado "material" *-- Material
 MaterialUsado "processo" *-- Processo
 
-FuncionarioNoProcesso "funcionario" o-- Funcionario
+FuncionarioNoProcesso "funcionario" *-- Funcionario
 FuncionarioNoProcesso "processo" *-- Processo
 
 @enduml

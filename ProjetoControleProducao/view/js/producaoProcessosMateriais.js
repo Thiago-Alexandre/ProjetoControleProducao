@@ -73,7 +73,6 @@ $(document).ready(function(){
     $(document).on("click", "#addMaterial", function() {
         $("#idProcesso").val($("#idProcessoMateriais").val());
         $.get("http://localhost:5000/materiais",function(materiais,status){
-            alert(status);
             for (var m in materiais) {
                 $("#materialId").append( 
                     $("<option></option>").attr("value", materiais[m].id).text(materiais[m].nome));

@@ -125,6 +125,7 @@ def listarFuncionariosProcesso(processo_id):
 def listarMateriais():
     try:
         materiais = db.session.query(Material).all()
+        print(materiais)
     except:
         materiais = []
     materiais_em_json = [ m.json() for m in materiais ]
@@ -532,6 +533,7 @@ def excluirMateria(materia_id):
         processosMateria = processosMateria.filter(MaterialUsado.material_id == materia_id).all()
         if not processosMateria:
             materia.delete()
+            Material.query.filter(Material.id == materia_id).delete()
             db.session.commit()
         else:
             resposta = jsonify({"resultado":"erro", "detalhes":"Matéria-Prima em uso!"})
@@ -553,6 +555,7 @@ def excluirProduto(produto_id):
         processosMateria = processosMateria.filter(MaterialUsado.material_id == produto_id).all()
         if not producoesProduto and not processosMateria:
             produto.delete()
+            Material.query.filter(Material.id == produto_id).delete()
             db.session.commit()
         else:
             resposta = jsonify({"resultado":"erro", "detalhes":"Produto em uso!"})
@@ -605,11 +608,12 @@ def excluirProcesso(processo_id):
 def excluirMaterialProcesso(material_usado_id):
     resposta = jsonify({"resultado": "ok", "detalhes": "ok"})
     try:
-        materialUsado = MaterialUsado.query.filter(MaterialUsado.id == material_usado_id)
-        materialUsado.delete()
-        db.session.commit()
-        materialUsado.material.atualizarEstoque(materialUsado.quantidadeUsada, True)
-        db.session.add(materialUsado.material)
+        materialDeletado = MaterialUsado.query.filter(MaterialUsado.id == material_usado_id)
+        materialUsado = MaterialUsado.query.filter(MaterialUsado.id == material_usado_id).first()
+        material = db.session.query(Material).filter(Material.id == materialUsado.material_id).first()
+        material.quantidadeEstoque += materialUsado.quantidadeUsada
+        materialDeletado.delete()
+        db.session.add(material)
         db.session.commit()
     except Exception as e:
         resposta = jsonify({"resultado":"erro", "detalhes":str(e)})
