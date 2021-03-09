@@ -42,12 +42,12 @@ Outras telas com classes básicas são a de produtos e matérias-primas, pois n�
 Já as matérias-primas necessitam da informação de valor unitário para que o cálculo dos custos da produção sejam realizados. É possível também adicionar ao estoque das matérias-primas (ícone verde com "+"), como se fosse realizado uma compra. Tanto os produtos quanto os matérias-primas possuem restrições na edição de dados e na hora de exclusão, que não será possível caso estejam vinculados e um processo ou produção.
 
 **Tela Matérias-Primas, mostrando a opção de adicionar ao estoque.**
-<img src="Prints/Tela_Materias_Prima.JPG" heigth="300" width="800">
+<img src="Prints/Tela_Materias_Prima.jpg" heigth="300" width="800">
 
 A tela de funcionários apresenta as mesmas funções das anteriores, se destacando apenas no fato de possuir um campo de seleção de cargos na hora de cadastrar ou editar um funcionário. Novamente, um funcionário não poderá ser excluído se estiver realizando um processo ou for supervisor de um.
 
 **Tela Funcionários, mostrando a opção de adicionar novo funcionário com seleção de cargos.**
-<img src="Prints/Tela_Funcionarios.JPG" heigth="300" width="800">
+<img src="Prints/Tela_Funcionarios.jpg" heigth="300" width="800">
 
 A tela inicial apresenta a lista de todas as produções e algumas funções para cada uma, além da pesquisa e cadastro de novas produções. Uma nova produção requer as informações do produto que será produzido e da quantidade produzida, sendo o tempo total e o custo total da produção gerados pelo sistema.
 
@@ -69,7 +69,7 @@ Voltando à função de mostrar processos da produção, novas funções poderã
 A terceira função da tela da listagem de processos da produção (ícone de objetos como pirâmede, cubo e esfera) é para mostrar os materiais utilizados no processo. Nesta nova tela é possível adicionar novos materiais, podendo ser utilizados tanto matérias-primas quanto produtos já produzidos internamente.
 
 **Tela Adicionar Material no Processo.**
-<img src="Prints/Tela_Novo_Material_Usado.JPG" heigth="300" width="800">
+<img src="Prints/Tela_Novo_Material_Usado.jpg" heigth="300" width="800">
 
 A quarta função (ícone de prancheta com funcionário) é semelhante a anterior, mas para mostrar os funcionários envolvidos no processo e possibilitar alocar novos funcionários ao processo.
 
